@@ -12,7 +12,7 @@ function App() {
       <div className="flex justify-center">
         <img src={iriyoLogo} alt="" />
       </div>
-      <p className="text-4xl text-blue-300">Iriyo Pharma</p>
+      <p className="text-4xl text-blue-300 bg-yellow-100">Iriyo Pharma</p>
     </>
   );
 }
