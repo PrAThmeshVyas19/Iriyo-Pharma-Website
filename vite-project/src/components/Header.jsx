@@ -30,15 +30,15 @@ export default function Header() {
         <div className="flex justify-between items-center h-16">
           {/* Logo & Brand Name */}
           <div
-            className="flex items-center gap-3 cursor-pointer"
+            className="flex items-center cursor-pointer"
             onClick={() => scrollToSection("home")}
           >
             <img
               src={iriyoLogo}
               alt="Iriyo Pharma"
-              className="h-10 w-auto hover:opacity-75 transition-opacity duration-200"
+              className="h-16 w-auto hover:opacity-75 transition-opacity duration-200"
             />
-            <div className="hidden sm:flex flex-col">
+            <div className="hidden sm:flex flex-col ">
               <span className="text-lg font-serif font-extrabold text-slate-900  leading-tight">
                 IRIYO
               </span>
