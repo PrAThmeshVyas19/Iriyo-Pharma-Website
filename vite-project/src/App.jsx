@@ -1,18 +1,21 @@
 import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
-import iriyoLogo from "./assets/logo/IriyoLogo.png";
+import Header from "./components/Header";
+import Hero from "./components/Hero";
+import About from "./components/About";
+import Contact from "./components/Contact";
+import Footer from "./components/Footer";
 
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
-    <>
-      <div className="flex justify-center">
-        <img src={iriyoLogo} alt="" />
-      </div>
-      <p className="text-4xl text-blue-100">Iriyo Pharma</p>
-    </>
+    <div className="min-h-screen bg-white">
+      <Header />
+      <Hero />
+      <About />
+      {/* <Products />
+      <Research /> */}
+      <Contact />
+      <Footer />
+    </div>
   );
 }
 
