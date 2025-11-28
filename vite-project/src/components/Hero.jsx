@@ -27,7 +27,7 @@ export default function Hero() {
         muted
         onEnded={handleVideoEnd}
         playsInline
-        className={`absolute inset-0 w-full h-full object-contain sm:object-cover transition-all duration-1000 ${
+        className={`absolute inset-0 w-full h-full object-cover transition-all duration-1000 ${
           isVideoEnded ? "blur-2xl brightness-50" : "blur-0"
         }`}
       >
