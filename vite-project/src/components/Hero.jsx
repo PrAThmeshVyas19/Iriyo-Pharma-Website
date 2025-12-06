@@ -1,6 +1,6 @@
 import { useState, useRef } from "react";
 import { ArrowRight, ChevronDown } from "lucide-react";
-import iriyoVideo from "../assets/Hero-Video/video.mp4";
+import iriyoVideo from "../assets/Hero-Video/video2.mp4";
 
 export default function Hero() {
   const [isVideoEnded, setIsVideoEnded] = useState(false);
@@ -38,8 +38,8 @@ export default function Hero() {
       <div
         className={`absolute inset-0 transition-all duration-1000 pointer-events-none ${
           isVideoEnded
-            ? "bg-gradient-to-b from-slate-900/60 via-slate-900/40 to-slate-900/60"
-            : "bg-gradient-to-b from-black/30 via-black/20 to-black/30"
+            ? "bg-linear-to-b from-slate-900/60 via-slate-900/40 to-slate-900/60"
+            : "bg-linear-to-b from-black/30 via-black/20 to-black/30"
         }`}
       />
 
@@ -52,7 +52,7 @@ export default function Hero() {
           }`}
         >
           <p className="text-teal-300 text-xs sm:text-sm font-semibold tracking-wider">
-            Innovating Healthcare Solutions
+            Iriyo Pharma Innovating Healthcare Solutions
           </p>
         </div>
 
@@ -63,7 +63,7 @@ export default function Hero() {
           }`}
         >
           Innovating Healthcare for a{" "}
-          <span className="bg-gradient-to-r from-teal-400 to-cyan-400 bg-clip-text text-transparent">
+          <span className="bg-linear-to-r from-teal-400 to-cyan-400 bg-clip-text text-transparent">
             Healthier Tomorrow
           </span>
         </h1>
@@ -86,7 +86,7 @@ export default function Hero() {
         >
           <button
             onClick={() => scrollToSection("products")}
-            className="group px-5 sm:px-6 py-2 sm:py-3 bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white rounded-lg font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-teal-500/50 flex items-center gap-2 justify-center text-xs sm:text-sm"
+            className="group px-5 sm:px-6 py-2 sm:py-3 bg-linear-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white rounded-lg font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-teal-500/50 flex items-center gap-2 justify-center text-xs sm:text-sm"
           >
             Our Products
             <ArrowRight className="w-3 sm:w-4 h-3 sm:h-4 group-hover:translate-x-1 transition-transform" />
@@ -109,7 +109,7 @@ export default function Hero() {
           </div>
         )}
 
-        {/* Decorative Gradient Orbs - Appear after video ends */}
+        {/* Decorative linear Orbs - Appear after video ends */}
         {isVideoEnded && (
           <div className="absolute inset-0 pointer-events-none overflow-hidden">
             <div className="absolute top-5 sm:top-10 md:top-20 left-2 sm:left-5 md:left-10 w-24 sm:w-40 md:w-72 h-24 sm:h-40 md:h-72 bg-teal-500/20 rounded-full blur-3xl animate-pulse" />
