@@ -1,122 +1,201 @@
-import { useState, useRef } from "react";
-import { ArrowRight, ChevronDown } from "lucide-react";
+import { useState, useEffect, useRef } from "react";
+import { motion } from "framer-motion";
+import { ArrowRight, ChevronDown, Play } from "lucide-react";
 import iriyoVideo from "../assets/Hero-Video/video2.mp4";
 
 export default function Hero() {
   const [isVideoEnded, setIsVideoEnded] = useState(false);
+  const [videoError, setVideoError] = useState(false);
   const videoRef = useRef(null);
 
-  const scrollToSection = (id) => {
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
-    }
-  };
+  // --- Logic: Handle Video Playback & Fallbacks ---
+  useEffect(() => {
+    // 1. Force Play on Mount
+    const playVideo = async () => {
+      if (videoRef.current) {
+        try {
+          await videoRef.current.play();
+        } catch (err) {
+          console.warn("Autoplay prevented by browser:", err);
+          setVideoError(true);
+          setIsVideoEnded(true); // Show content immediately if blocked
+        }
+      }
+    };
+
+    playVideo();
+
+    // 2. Safety Timeout: If video stalls or is on slow network, show content anyway after 4s
+    const fallbackTimer = setTimeout(() => {
+      if (!isVideoEnded) {
+        setIsVideoEnded(true);
+      }
+    }, 5000);
+
+    return () => clearTimeout(fallbackTimer);
+  }, []);
 
   const handleVideoEnd = () => {
     setIsVideoEnded(true);
   };
 
+  const scrollToSection = (id) => {
+    const element = document.getElementById(id);
+    if (element) {
+      // Offset for fixed header
+      const headerOffset = 80;
+      const elementPosition = element.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.scrollY - headerOffset;
+      window.scrollTo({ top: offsetPosition, behavior: "smooth" });
+    }
+  };
+
   return (
-    <section className="relative w-full h-80 sm:h-96 md:h-screen overflow-hidden">
-      {/* Video Background */}
-      <video
-        ref={videoRef}
-        src={iriyoVideo}
-        autoPlay
-        muted
-        onEnded={handleVideoEnd}
-        playsInline
-        className={`absolute inset-0 w-full h-full object-cover transition-all duration-1000 ${
-          isVideoEnded ? "blur-2xl brightness-50" : "blur-0"
-        }`}
-      >
-        Your browser does not support the video tag.
-      </video>
+    <section className="relative w-full h-[85vh] sm:h-screen overflow-hidden bg-slate-900">
+      {/* --- 1. Video Layer --- */}
+      <div className="absolute inset-0 z-0">
+        <video
+          ref={videoRef}
+          src={iriyoVideo}
+          autoPlay
+          muted
+          loop={false} // Ensure it plays once
+          playsInline // CRITICAL for iOS
+          onEnded={handleVideoEnd}
+          className={`w-full h-full object-cover transition-all duration-[1500ms] ease-in-out ${
+            isVideoEnded
+              ? "scale-105 blur-md opacity-40"
+              : "scale-100 blur-0 opacity-100"
+          }`}
+        >
+          <source src={iriyoVideo} type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
 
-      {/* Dark Overlay - Intensifies when video ends */}
-      <div
-        className={`absolute inset-0 transition-all duration-1000 pointer-events-none ${
-          isVideoEnded
-            ? "bg-linear-to-b from-slate-900/60 via-slate-900/40 to-slate-900/60"
-            : "bg-linear-to-b from-black/30 via-black/20 to-black/30"
-        }`}
-      />
-
-      {/* Content Container */}
-      <div className="relative z-10 h-full flex flex-col items-center justify-center px-4 py-8 sm:px-6 sm:py-12 md:px-8 md:py-0">
-        {/* Badge - Fades out when video ends */}
+        {/* Gradient Overlays */}
         <div
-          className={`mb-2 sm:mb-4 px-3 sm:px-4 py-1 sm:py-2 bg-teal-500/20 border border-teal-400/50 rounded-full backdrop-blur-sm transition-all duration-700 ${
-            isVideoEnded ? "opacity-0 scale-95" : "opacity-100 scale-100"
+          className={`absolute inset-0 bg-gradient-to-b from-slate-900/30 via-transparent to-slate-900/90 transition-opacity duration-1000 ${
+            isVideoEnded ? "opacity-100" : "opacity-60"
           }`}
-        >
-          <p className="text-teal-300 text-xs sm:text-sm font-semibold tracking-wider">
-            Iriyo Pharma Innovating Healthcare Solutions
-          </p>
-        </div>
-
-        {/* Main Title - Fades in after video ends */}
-        <h1
-          className={`max-w-3xl text-center text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-bold text-white mb-2 sm:mb-4 leading-tight transition-all duration-1000 delay-500 transform ${
-            isVideoEnded ? "opacity-100 scale-100" : "opacity-0 scale-95"
-          }`}
-        >
-          Innovating Healthcare for a{" "}
-          <span className="bg-linear-to-r from-teal-400 to-cyan-400 bg-clip-text text-transparent">
-            Healthier Tomorrow
-          </span>
-        </h1>
-
-        {/* Subtitle - Fades in after video ends */}
-        <p
-          className={`max-w-xl text-center text-xs sm:text-sm md:text-base text-gray-300 mb-4 sm:mb-6 transition-all duration-1000 delay-700 ${
+        />
+        <div
+          className={`absolute inset-0 bg-slate-900/40 backdrop-blur-[2px] transition-opacity duration-1000 ${
             isVideoEnded ? "opacity-100" : "opacity-0"
           }`}
+        />
+      </div>
+
+      {/* --- 2. Content Container --- */}
+      <div className="relative z-10 h-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col justify-center items-center text-center">
+        {/* Animated Badge */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={isVideoEnded ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+          className="mb-6 inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-teal-400/30 bg-teal-500/10 backdrop-blur-md"
+        >
+          <span className="relative flex h-2 w-2">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-teal-400 opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-teal-500"></span>
+          </span>
+          <span className="text-teal-300 text-xs font-bold tracking-wider uppercase">
+            Innovating Healthcare Solutions
+          </span>
+        </motion.div>
+
+        {/* Main Title */}
+        <motion.h1
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={
+            isVideoEnded ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.9 }
+          }
+          transition={{ duration: 0.8, delay: 0.4 }}
+          className="max-w-4xl text-4xl sm:text-5xl md:text-7xl font-extrabold text-white mb-6 leading-tight tracking-tight drop-shadow-lg"
+        >
+          Innovating Healthcare for a{" "}
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-cyan-300">
+            Healthier Tomorrow
+          </span>
+        </motion.h1>
+
+        {/* Subtitle */}
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          animate={isVideoEnded ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+          transition={{ duration: 0.8, delay: 0.6 }}
+          className="max-w-2xl text-base sm:text-lg md:text-xl text-slate-200 mb-10 leading-relaxed font-light"
         >
           Leading pharmaceutical company dedicated to developing life-changing
           medicines and improving patient outcomes worldwide.
-        </p>
+        </motion.p>
 
-        {/* CTA Buttons - Fade in after video ends */}
-        <div
-          className={`flex flex-col sm:flex-row gap-2 sm:gap-3 w-full sm:w-auto transition-all duration-1000 delay-1000 ${
-            isVideoEnded ? "opacity-100" : "opacity-0"
-          }`}
+        {/* Buttons */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={isVideoEnded ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+          transition={{ duration: 0.8, delay: 0.8 }}
+          className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto"
         >
           <button
             onClick={() => scrollToSection("products")}
-            className="group px-5 sm:px-6 py-2 sm:py-3 bg-linear-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white rounded-lg font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-teal-500/50 flex items-center gap-2 justify-center text-xs sm:text-sm"
+            className="group relative px-8 py-3.5 bg-white text-slate-900 rounded-full font-bold text-sm shadow-xl hover:shadow-2xl hover:bg-teal-50 transition-all duration-300 flex items-center justify-center gap-2 overflow-hidden"
           >
-            Our Products
-            <ArrowRight className="w-3 sm:w-4 h-3 sm:h-4 group-hover:translate-x-1 transition-transform" />
+            <span className="relative z-10 flex items-center gap-2">
+              Explore Products{" "}
+              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            </span>
           </button>
+
           <button
             onClick={() => scrollToSection("contact")}
-            className="px-5 sm:px-6 py-2 sm:py-3 border-2 border-white/80 text-white rounded-lg font-semibold hover:bg-white/10 transition-all duration-300 backdrop-blur-sm hover:border-white text-xs sm:text-sm"
+            className="px-8 py-3.5 rounded-full border border-white/30 bg-white/5 backdrop-blur-sm text-white font-bold text-sm hover:bg-white/10 hover:border-white transition-all duration-300"
           >
-            Contact Us
+            Contact Support
           </button>
-        </div>
-
-        {/* Scroll Indicator - Only shows while video playing */}
-        {!isVideoEnded && (
-          <div className="absolute bottom-4 sm:bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce hidden sm:block">
-            <p className="text-white/70 text-xs sm:text-sm mb-2">
-              Scroll to explore
-            </p>
-            <ChevronDown className="w-5 h-5 text-teal-400 mx-auto" />
-          </div>
-        )}
-
-        {/* Decorative linear Orbs - Appear after video ends */}
-        {isVideoEnded && (
-          <div className="absolute inset-0 pointer-events-none overflow-hidden">
-            <div className="absolute top-5 sm:top-10 md:top-20 left-2 sm:left-5 md:left-10 w-24 sm:w-40 md:w-72 h-24 sm:h-40 md:h-72 bg-teal-500/20 rounded-full blur-3xl animate-pulse" />
-            <div className="absolute bottom-5 sm:bottom-10 md:bottom-20 right-2 sm:right-5 md:right-10 w-28 sm:w-48 md:w-96 h-28 sm:h-48 md:h-96 bg-cyan-500/10 rounded-full blur-3xl animate-pulse" />
-          </div>
-        )}
+        </motion.div>
       </div>
+
+      {/* --- 3. Decorative Bottom Elements --- */}
+
+      {/* Scroll Indicator (Only shows if video is playing/intro phase) */}
+      {!isVideoEnded && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="absolute bottom-10 left-1/2 transform -translate-x-1/2 flex flex-col items-center gap-2"
+        >
+          <span className="text-white/60 text-xs uppercase tracking-widest">
+            Loading Experience
+          </span>
+          <div className="w-12 h-1 bg-white/20 rounded-full overflow-hidden">
+            <motion.div
+              className="h-full bg-teal-400"
+              initial={{ width: "0%" }}
+              animate={{ width: "100%" }}
+              transition={{ duration: 4, ease: "linear" }}
+            />
+          </div>
+        </motion.div>
+      )}
+
+      {/* Animated Orbs (Framer Motion) */}
+      {isVideoEnded && (
+        <>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 0.3 }}
+            transition={{ duration: 2 }}
+            className="absolute top-1/4 left-0 w-[500px] h-[500px] bg-teal-500 rounded-full mix-blend-overlay filter blur-[100px] animate-blob"
+          />
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 0.3 }}
+            transition={{ duration: 2, delay: 0.5 }}
+            className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-blue-500 rounded-full mix-blend-overlay filter blur-[100px] animate-blob animation-delay-2000"
+          />
+        </>
+      )}
     </section>
   );
 }
