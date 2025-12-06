@@ -21,6 +21,7 @@ import {
   Quote,
   Sprout,
   HandHeart,
+  ChevronRight, // Added for mobile swipe hint
 } from "lucide-react";
 
 // --- Utility: Animated Counter ---
@@ -67,8 +68,8 @@ const BackgroundLayer = () => (
       className="absolute inset-0 h-full w-full stroke-slate-300/30 [mask-image:radial-gradient(100%_100%_at_top_right,white,transparent)]"
       aria-hidden="true"
     >
-      <defs>
-        {/* <pattern
+      {/* <defs>
+        <pattern
           id="grid-pattern"
           width={24}
           height={24}
@@ -81,8 +82,8 @@ const BackgroundLayer = () => (
             fill="currentColor"
             className="fill-slate-300/50"
           />
-        </pattern> */}
-      </defs>
+        </pattern>
+      </defs> */}
       <rect
         width="100%"
         height="100%"
@@ -107,7 +108,6 @@ const stats = [
   { icon: Heart, value: "50", suffix: "M+", label: "Patients Helped" },
 ];
 
-// UPDATED VALUES: Integrity, Innovation, Responsibility, Humility
 const values = [
   {
     icon: ShieldCheck,
@@ -223,7 +223,7 @@ export default function About() {
         <section className="py-24">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
-              {/* Mission Card (Solid Dark Glass) */}
+              {/* Mission Card */}
               <Section className="group relative overflow-hidden rounded-[2rem] bg-slate-900/95 backdrop-blur-md text-white p-8 lg:p-12 shadow-2xl ring-1 ring-white/10">
                 <div className="absolute top-0 right-0 p-8 opacity-10 transition-transform duration-700 group-hover:scale-110 group-hover:rotate-12">
                   <Target size={240} />
@@ -246,7 +246,7 @@ export default function About() {
                 </div>
               </Section>
 
-              {/* Vision Card (Light Glass) */}
+              {/* Vision Card */}
               <Section className="group relative overflow-hidden rounded-[2rem] border border-white/50 bg-white/60 backdrop-blur-md p-8 lg:p-12 shadow-lg">
                 <div className="absolute bottom-0 right-0 p-8 opacity-5 transition-transform duration-700 group-hover:scale-110 group-hover:-rotate-12">
                   <Eye size={240} />
@@ -272,7 +272,7 @@ export default function About() {
           </div>
         </section>
 
-        {/* 3. VALUES - UPDATED WITH INTEGRITY, INNOVATION, RESPONSIBILITY, HUMILITY */}
+        {/* 3. VALUES */}
         <section className="py-24">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <Section className="text-center mb-16">
@@ -312,10 +312,10 @@ export default function About() {
           </div>
         </section>
 
-        {/* 4. LEADERSHIP */}
+        {/* 4. LEADERSHIP (Mobile-Friendly Horizontal Scroll) */}
         <section className="py-24">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex flex-col md:flex-row justify-between items-end mb-12">
+            <div className="flex flex-col md:flex-row justify-between items-end mb-8 md:mb-12">
               <Section>
                 <h2 className="text-3xl font-bold tracking-tight text-slate-900">
                   Leadership Board
@@ -325,13 +325,22 @@ export default function About() {
                 </p>
               </Section>
               <Section>
-                <button className="hidden md:flex items-center gap-2 text-sm font-semibold text-blue-600 hover:text-blue-700 transition-colors mt-4 bg-white/50 px-4 py-2 rounded-full border border-blue-100">
-                  View Chart <ArrowRight size={16} />
-                </button>
+                <div className="hidden md:flex">
+                  <button className="flex items-center gap-2 text-sm font-semibold text-blue-600 hover:text-blue-700 transition-colors mt-4 bg-white/50 px-4 py-2 rounded-full border border-blue-100">
+                    View Chart <ArrowRight size={16} />
+                  </button>
+                </div>
               </Section>
             </div>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {/* Mobile Scroll Hint */}
+            <div className="md:hidden flex items-center gap-2 text-sm text-slate-400 mb-4 animate-pulse">
+              <span>Swipe to see more</span>
+              <ChevronRight size={16} />
+            </div>
+
+            {/* Container for scrollable area on mobile, grid on desktop */}
+            <div className="flex overflow-x-auto pb-8 -mx-4 px-4 md:grid md:grid-cols-2 lg:grid-cols-4 md:gap-8 md:overflow-visible md:pb-0 md:px-0 snap-x snap-mandatory hide-scrollbar">
               {directors.map((person, idx) => (
                 <motion.div
                   key={idx}
@@ -339,7 +348,7 @@ export default function About() {
                   whileInView={{ opacity: 1, scale: 1 }}
                   viewport={{ once: true }}
                   transition={{ delay: idx * 0.1 }}
-                  className="group relative"
+                  className="group relative min-w-[280px] md:min-w-0 snap-center mr-6 md:mr-0 last:mr-0"
                 >
                   <div className="relative aspect-[4/5] overflow-hidden rounded-2xl bg-white/50 shadow-inner mb-4">
                     <img
@@ -356,7 +365,7 @@ export default function About() {
                       </a>
                     </div>
                   </div>
-                  <div className="bg-white/40 backdrop-blur-sm p-4 rounded-xl border border-white/50">
+                  <div className="bg-white/40 backdrop-blur-sm p-4 rounded-xl border border-white/50 shadow-sm">
                     <h4 className="text-lg font-bold text-slate-900">
                       {person.name}
                     </h4>
@@ -366,6 +375,12 @@ export default function About() {
                   </div>
                 </motion.div>
               ))}
+            </div>
+
+            <div className="mt-6 text-center md:hidden">
+              <button className="inline-flex items-center gap-2 text-sm font-semibold text-blue-600 bg-white/50 px-5 py-2.5 rounded-full border border-blue-100 shadow-sm">
+                View Organizational Chart <ArrowRight size={16} />
+              </button>
             </div>
           </div>
         </section>
