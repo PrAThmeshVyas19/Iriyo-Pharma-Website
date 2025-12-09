@@ -1,35 +1,29 @@
 import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
-import { ArrowRight, ChevronDown, Play } from "lucide-react";
+import { ArrowRight } from "lucide-react";
+import { useNavigate } from "react-router-dom"; // <--- Import this
 import iriyoVideo from "../assets/Hero-Video/video2.mp4";
 
 export default function Hero() {
+  const navigate = useNavigate(); // <--- Initialize hook
   const [isVideoEnded, setIsVideoEnded] = useState(false);
-  const [videoError, setVideoError] = useState(false);
   const videoRef = useRef(null);
 
-  // --- Logic: Handle Video Playback & Fallbacks ---
   useEffect(() => {
-    // 1. Force Play on Mount
     const playVideo = async () => {
       if (videoRef.current) {
         try {
           await videoRef.current.play();
         } catch (err) {
-          console.warn("Autoplay prevented by browser:", err);
-          setVideoError(true);
-          setIsVideoEnded(true); // Show content immediately if blocked
+          console.warn("Autoplay prevented:", err);
+          setIsVideoEnded(true);
         }
       }
     };
-
     playVideo();
 
-    // 2. Safety Timeout: If video stalls or is on slow network, show content anyway after 4s
     const fallbackTimer = setTimeout(() => {
-      if (!isVideoEnded) {
-        setIsVideoEnded(true);
-      }
+      if (!isVideoEnded) setIsVideoEnded(true);
     }, 5000);
 
     return () => clearTimeout(fallbackTimer);
@@ -39,28 +33,38 @@ export default function Hero() {
     setIsVideoEnded(true);
   };
 
-  const scrollToSection = (id) => {
-    const element = document.getElementById(id);
-    if (element) {
-      // Offset for fixed header
-      const headerOffset = 80;
-      const elementPosition = element.getBoundingClientRect().top;
-      const offsetPosition = elementPosition + window.scrollY - headerOffset;
-      window.scrollTo({ top: offsetPosition, behavior: "smooth" });
+  // Updated Navigation Handler
+  const handleNavigation = (destination) => {
+    if (destination === "products") {
+      // Navigate to the separate Products page
+      navigate("/products");
+    } else if (destination === "contact") {
+      // Try to scroll first (if Contact is on Home), otherwise navigate
+      const contactSection = document.getElementById("contact");
+      if (contactSection) {
+        // Offset for header
+        const headerOffset = 80;
+        const elementPosition = contactSection.getBoundingClientRect().top;
+        const offsetPosition = elementPosition + window.scrollY - headerOffset;
+        window.scrollTo({ top: offsetPosition, behavior: "smooth" });
+      } else {
+        // Fallback if you decide to make Contact a separate page later
+        navigate("/contact");
+      }
     }
   };
 
   return (
     <section className="relative w-full h-[85vh] sm:h-screen overflow-hidden bg-slate-900">
-      {/* --- 1. Video Layer --- */}
+      {/* --- Video Layer --- */}
       <div className="absolute inset-0 z-0">
         <video
           ref={videoRef}
           src={iriyoVideo}
           autoPlay
           muted
-          loop={false} // Ensure it plays once
-          playsInline // CRITICAL for iOS
+          loop={false}
+          playsInline
           onEnded={handleVideoEnd}
           className={`w-full h-full object-cover transition-all duration-[1500ms] ease-in-out ${
             isVideoEnded
@@ -69,10 +73,8 @@ export default function Hero() {
           }`}
         >
           <source src={iriyoVideo} type="video/mp4" />
-          Your browser does not support the video tag.
         </video>
 
-        {/* Gradient Overlays */}
         <div
           className={`absolute inset-0 bg-gradient-to-b from-slate-900/30 via-transparent to-slate-900/90 transition-opacity duration-1000 ${
             isVideoEnded ? "opacity-100" : "opacity-60"
@@ -85,9 +87,8 @@ export default function Hero() {
         />
       </div>
 
-      {/* --- 2. Content Container --- */}
+      {/* --- Content --- */}
       <div className="relative z-10 h-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col justify-center items-center text-center">
-        {/* Animated Badge */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={isVideoEnded ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
@@ -103,7 +104,6 @@ export default function Hero() {
           </span>
         </motion.div>
 
-        {/* Main Title */}
         <motion.h1
           initial={{ opacity: 0, scale: 0.9 }}
           animate={
@@ -118,7 +118,6 @@ export default function Hero() {
           </span>
         </motion.h1>
 
-        {/* Subtitle */}
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={isVideoEnded ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
@@ -129,15 +128,15 @@ export default function Hero() {
           medicines and improving patient outcomes worldwide.
         </motion.p>
 
-        {/* Buttons */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={isVideoEnded ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
           transition={{ duration: 0.8, delay: 0.8 }}
           className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto"
         >
+          {/* UPDATED: Uses handleNavigation to go to /products route */}
           <button
-            onClick={() => scrollToSection("products")}
+            onClick={() => handleNavigation("products")}
             className="group relative px-8 py-3.5 bg-white text-slate-900 rounded-full font-bold text-sm shadow-xl hover:shadow-2xl hover:bg-teal-50 transition-all duration-300 flex items-center justify-center gap-2 overflow-hidden"
           >
             <span className="relative z-10 flex items-center gap-2">
@@ -146,8 +145,9 @@ export default function Hero() {
             </span>
           </button>
 
+          {/* UPDATED: Uses handleNavigation to scroll or navigate */}
           <button
-            onClick={() => scrollToSection("contact")}
+            onClick={() => handleNavigation("contact")}
             className="px-8 py-3.5 rounded-full border border-white/30 bg-white/5 backdrop-blur-sm text-white font-bold text-sm hover:bg-white/10 hover:border-white transition-all duration-300"
           >
             Contact Support
@@ -155,9 +155,7 @@ export default function Hero() {
         </motion.div>
       </div>
 
-      {/* --- 3. Decorative Bottom Elements --- */}
-
-      {/* Scroll Indicator (Only shows if video is playing/intro phase) */}
+      {/* --- Decorative Elements --- */}
       {!isVideoEnded && (
         <motion.div
           initial={{ opacity: 0 }}
@@ -179,7 +177,6 @@ export default function Hero() {
         </motion.div>
       )}
 
-      {/* Animated Orbs (Framer Motion) */}
       {isVideoEnded && (
         <>
           <motion.div
