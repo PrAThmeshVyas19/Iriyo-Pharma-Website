@@ -52,7 +52,6 @@ export default function Footer() {
     <footer className="relative bg-slate-950 text-slate-300 py-16 overflow-hidden border-t border-slate-800">
       {/* 1. Animated Background Layers */}
       <div className="absolute inset-0 z-0 pointer-events-none">
-        {/* Subtle Grid Pattern */}
         <div
           className="absolute inset-0 opacity-[0.03]"
           style={{
@@ -60,8 +59,6 @@ export default function Footer() {
             backgroundSize: "24px 24px",
           }}
         />
-
-        {/* Glowing Orbs */}
         <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-900/20 rounded-full blur-[128px] animate-blob" />
         <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-indigo-900/20 rounded-full blur-[128px] animate-blob animation-delay-2000" />
       </div>
@@ -72,7 +69,6 @@ export default function Footer() {
           {/* Brand Column */}
           <div className="space-y-6">
             <div className="flex items-center space-x-3">
-              {/* UPDATED: Added bg-white to ensure the dark logo is visible */}
               <div className="p-2 bg-white rounded-lg shadow-lg shadow-blue-900/20">
                 <img
                   src={iriyoLogo}
@@ -101,8 +97,11 @@ export default function Footer() {
           {/* Links Columns */}
           <FooterColumn title="Company">
             <FooterLink href="#about">About Us</FooterLink>
-            <FooterLink href="#careers">Careers</FooterLink>
-            <FooterLink href="#news">News & Media</FooterLink>
+
+            {/* UPDATED: Points to /careers route instead of anchor */}
+            <FooterLink href="/careers">Careers</FooterLink>
+
+            <FooterLink href="/news">News & Media</FooterLink>
             <FooterLink href="#contact">Contact Support</FooterLink>
           </FooterColumn>
 

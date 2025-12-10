@@ -7,6 +7,9 @@ import Contact from "./components/Contact";
 import Products from "./pages/Products"; // Your Listing Page
 import ProductDetails from "./pages/ProductDetails"; // Your NEW Single Page
 import News from "./pages/News";
+import NewsDetails from "./pages/NewsDetails";
+import Careers from "./pages/Careers";
+import CareerDetails from "./pages/CareerDetails";
 
 // Wrapper for Home Page
 const Home = () => (
@@ -30,6 +33,9 @@ function App() {
             <Route path="/products/:id" element={<ProductDetails />} />{" "}
             {/* Dynamic Route */}
             <Route path="/news" element={<News />} />
+            <Route path="/news/:id" element={<NewsDetails />} />
+            <Route path="/careers" element={<Careers />} />
+            <Route path="/careers/:id" element={<CareerDetails />} />
           </Routes>
         </main>
         <Footer />

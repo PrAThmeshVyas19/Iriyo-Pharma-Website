@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Menu, X } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion"; // Import Framer Motion
+import { motion, AnimatePresence } from "framer-motion";
 import iriyoLogo from "../assets/logo/logo2.png";
 
 const navItems = [
@@ -9,6 +9,7 @@ const navItems = [
   { id: "about", label: "About Us", path: "/#about" },
   { id: "products", label: "Products", path: "/products" },
   { id: "research", label: "Research", path: "/news" },
+  { id: "careers", label: "Careers", path: "/careers" }, // <--- Added this
 ];
 
 export default function Header() {
@@ -18,10 +19,13 @@ export default function Header() {
   const navigate = useNavigate();
   const location = useLocation();
 
+  // Updated logic to highlight "Careers" tab
   useEffect(() => {
     const path = location.pathname;
-    if (path === "/products") setActiveSection("products");
-    else if (path === "/news") setActiveSection("research");
+    if (path.startsWith("/products")) setActiveSection("products");
+    else if (path.startsWith("/news")) setActiveSection("research");
+    else if (path.startsWith("/careers"))
+      setActiveSection("careers"); // <--- Added check
     else if (path === "/") setActiveSection("home");
   }, [location]);
 
