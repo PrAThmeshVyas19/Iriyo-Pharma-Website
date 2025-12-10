@@ -8,7 +8,7 @@ const navItems = [
   { id: "home", label: "Home", path: "/" },
   { id: "about", label: "About Us", path: "/#about" },
   { id: "products", label: "Products", path: "/products" },
-  { id: "research", label: "Research", path: "/news" },
+  { id: "news", label: "News", path: "/news" },
   { id: "careers", label: "Careers", path: "/careers" }, // <--- Added this
 ];
 
@@ -23,7 +23,7 @@ export default function Header() {
   useEffect(() => {
     const path = location.pathname;
     if (path.startsWith("/products")) setActiveSection("products");
-    else if (path.startsWith("/news")) setActiveSection("research");
+    else if (path.startsWith("/news")) setActiveSection("news");
     else if (path.startsWith("/careers"))
       setActiveSection("careers"); // <--- Added check
     else if (path === "/") setActiveSection("home");
