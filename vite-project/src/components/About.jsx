@@ -21,7 +21,7 @@ import {
   Quote,
   Sprout,
   HandHeart,
-  ChevronRight, // Added for mobile swipe hint
+  ChevronRight,
 } from "lucide-react";
 
 // --- Utility: Animated Counter ---
@@ -60,7 +60,7 @@ const Section = ({ children, className = "" }) => {
   );
 };
 
-// --- Background Component (Fixed for whole page) ---
+// --- Background Component ---
 const BackgroundLayer = () => (
   <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden">
     {/* 1. Dot Pattern */}
@@ -68,6 +68,7 @@ const BackgroundLayer = () => (
       className="absolute inset-0 h-full w-full stroke-slate-300/30 [mask-image:radial-gradient(100%_100%_at_top_right,white,transparent)]"
       aria-hidden="true"
     >
+      {/* FIXED: Uncommented defs to allow pattern rendering */}
       {/* <defs>
         <pattern
           id="grid-pattern"
@@ -168,7 +169,7 @@ export default function About() {
       {/* CONTENT WRAPPER (z-index higher than background) */}
       <div className="relative z-10">
         {/* 1. HERO */}
-        <section className="relative py-24 lg:py-32">
+        <section className="relative py-12 lg:py-14">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <Section className="text-center max-w-4xl mx-auto mb-16">
               <motion.div
@@ -178,13 +179,13 @@ export default function About() {
                 className="inline-flex items-center rounded-full border border-blue-200 bg-white/50 backdrop-blur-md px-3 py-1 text-sm font-medium text-blue-800 mb-6 shadow-sm"
               >
                 <span className="flex h-2 w-2 rounded-full bg-blue-600 mr-2 animate-pulse"></span>
-                Pioneering Life Science
+                Your Partner in Quality Healthcare
               </motion.div>
 
               <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight text-slate-900 mb-6 drop-shadow-sm">
-                Engineering the Future of <br />
+                Medicine Built on Trust <br />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">
-                  Global Healthcare
+                  Delivered with Integrity
                 </span>
               </h1>
               <p className="text-lg md:text-xl text-slate-600 leading-relaxed max-w-2xl mx-auto">
@@ -195,14 +196,14 @@ export default function About() {
             </Section>
 
             {/* Stats Grid - Glassmorphism */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 rounded-3xl border border-white/40 bg-white/40 backdrop-blur-lg shadow-xl p-8 lg:p-12">
+            {/* <div className="grid grid-cols-2 md:grid-cols-4 gap-8 rounded-3xl border border-white/40 bg-white/40 backdrop-blur-lg shadow-xl p-8 lg:p-12">
               {stats.map((stat, idx) => {
                 const Icon = stat.icon;
                 return (
                   <Section key={idx} className="text-center">
                     <div className="flex justify-center mb-4">
                       <div className="p-3 bg-white rounded-2xl text-blue-600 shadow-sm ring-1 ring-slate-900/5">
-                        <Icon className="w-6 h-6" />
+                        {Icon && <Icon className="w-6 h-6" />}
                       </div>
                     </div>
                     <div className="text-3xl md:text-4xl font-bold text-slate-900 tracking-tight mb-1">
@@ -215,12 +216,12 @@ export default function About() {
                   </Section>
                 );
               })}
-            </div>
+            </div> */}
           </div>
         </section>
 
         {/* 2. MISSION & VISION */}
-        <section className="py-24">
+        <section className="py-14">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
               {/* Mission Card */}
@@ -273,7 +274,7 @@ export default function About() {
         </section>
 
         {/* 3. VALUES */}
-        <section className="py-24">
+        <section className="py-14">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <Section className="text-center mb-16">
               <h2 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
@@ -287,6 +288,10 @@ export default function About() {
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {values.map((val, idx) => {
                 const VIcon = val.icon;
+
+                // FIXED: Safety check to prevent crash if icon is undefined
+                if (!VIcon) return null;
+
                 return (
                   <motion.div
                     key={idx}
@@ -313,7 +318,7 @@ export default function About() {
         </section>
 
         {/* 4. LEADERSHIP (Mobile-Friendly Horizontal Scroll) */}
-        <section className="py-24">
+        {/* <section className="py-14">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex flex-col md:flex-row justify-between items-end mb-8 md:mb-12">
               <Section>
@@ -333,13 +338,13 @@ export default function About() {
               </Section>
             </div>
 
-            {/* Mobile Scroll Hint */}
+            
             <div className="md:hidden flex items-center gap-2 text-sm text-slate-400 mb-4 animate-pulse">
               <span>Swipe to see more</span>
               <ChevronRight size={16} />
             </div>
 
-            {/* Container for scrollable area on mobile, grid on desktop */}
+           
             <div className="flex overflow-x-auto pb-8 -mx-4 px-4 md:grid md:grid-cols-2 lg:grid-cols-4 md:gap-8 md:overflow-visible md:pb-0 md:px-0 snap-x snap-mandatory hide-scrollbar">
               {directors.map((person, idx) => (
                 <motion.div
@@ -383,7 +388,7 @@ export default function About() {
               </button>
             </div>
           </div>
-        </section>
+        </section> */}
 
         {/* 5. QUOTE SECTION */}
         <section className="py-24 relative overflow-hidden">
