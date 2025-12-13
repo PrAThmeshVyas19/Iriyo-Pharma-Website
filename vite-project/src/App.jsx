@@ -10,6 +10,8 @@ import News from "./pages/News";
 import NewsDetails from "./pages/NewsDetails";
 import Careers from "./pages/Careers";
 import CareerDetails from "./pages/CareerDetails";
+import AnalyticsTracker from "./components/AnalyticsTracker";
+import ClientReport from "./pages/ClientReports";
 
 // Wrapper for Home Page
 const Home = () => (
@@ -23,10 +25,12 @@ const Home = () => (
 function App() {
   return (
     <Router>
+      <AnalyticsTracker />
       <div className="flex flex-col min-h-screen">
         <Header />
         <main className="grow">
           <Routes>
+            <Route path="/report" element={<ClientReport />} />
             <Route path="/" element={<Home />} />
             {/* PRODUCT ROUTES */}
             <Route path="/products" element={<Products />} />
