@@ -9,14 +9,18 @@ import {
   Clock,
   ArrowRight,
   MessageSquare,
+  Loader2,
 } from "lucide-react";
 
-// --- Background Components (Consistent with About.jsx) ---
+// REPLACE THIS with your actual Google Apps Script Web App URL
+const APPS_SCRIPT_URL =
+  "https://script.google.com/macros/s/AKfycbwLVbBD5OCop7EtEf0sVZObYWrBvcMOTUfJDvbBwLhsUHI3c4iltiSQsiZ7jCeLR-ucSw/exec";
+
+// --- Background Components ---
 const BackgroundLayer = () => (
   <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-    {/* Dot Pattern */}
     <svg
-      className="absolute inset-0 h-full w-full stroke-slate-300/30 mask-image:[radial-linear(100%_100%_at_top_right,white,transparent)]"
+      className="absolute inset-0 h-full w-full stroke-slate-300/30"
       aria-hidden="true"
     >
       <defs>
@@ -42,14 +46,11 @@ const BackgroundLayer = () => (
         fill="url(#contact-grid-pattern)"
       />
     </svg>
-
-    {/* Animated Blobs */}
     <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-200/40 rounded-full mix-blend-multiply filter blur-[80px] opacity-50 animate-blob" />
     <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-indigo-200/40 rounded-full mix-blend-multiply filter blur-[80px] opacity-50 animate-blob animation-delay-2000" />
   </div>
 );
 
-// --- Shadcn-style Input Component ---
 const InputGroup = ({
   label,
   id,
@@ -71,7 +72,7 @@ const InputGroup = ({
       onChange={onChange}
       required={required}
       placeholder={placeholder}
-      className="flex h-11 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm ring-offset-white file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-slate-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 transition-all duration-200"
+      className="flex h-11 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2 transition-all duration-200"
     />
   </div>
 );
@@ -98,8 +99,24 @@ export default function Contact() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    // Simulate API call
-    setTimeout(() => {
+
+    try {
+      // Adding the 'source' field here to bifurcate in Google Sheets
+      const payload = {
+        ...formData,
+        source: "Contact Us",
+      };
+
+      // Send data to Google Sheets via Apps Script
+      await fetch(APPS_SCRIPT_URL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+
       setLoading(false);
       setSubmitted(true);
       setFormData({
@@ -111,8 +128,15 @@ export default function Contact() {
         subject: "",
         message: "",
       });
+
       setTimeout(() => setSubmitted(false), 5000);
-    }, 1500);
+    } catch (error) {
+      console.error("Submission error:", error);
+      setLoading(false);
+      alert(
+        "Something went wrong. Please check your connection and try again."
+      );
+    }
   };
 
   const contactInfo = [
@@ -145,14 +169,11 @@ export default function Contact() {
       className="relative py-24 bg-slate-50 min-h-screen overflow-hidden"
     >
       <BackgroundLayer />
-
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header Section */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
           <div className="inline-flex items-center rounded-full border border-blue-200 bg-white/60 backdrop-blur-sm px-3 py-1 text-sm font-medium text-blue-800 mb-6 shadow-sm">
@@ -165,63 +186,39 @@ export default function Contact() {
               Our Expert Team
             </span>
           </h2>
-          <p className="text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed">
-            Have questions about our pharmaceutical solutions? We are here to
-            provide you with professional guidance and support.
-          </p>
         </motion.div>
 
-        {/* Info Cards Grid */}
+        {/* Info Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-          {contactInfo.map((info, index) => {
-            const Icon = info.icon;
-            return (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1, duration: 0.5 }}
-                className="group relative bg-white/60 backdrop-blur-md rounded-2xl p-8 border border-white/50 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+          {contactInfo.map((info, index) => (
+            <motion.div
+              key={index}
+              className="group bg-white/60 backdrop-blur-md rounded-2xl p-8 border border-white/50 shadow-sm hover:shadow-xl transition-all"
+            >
+              <div
+                className={`w-12 h-12 ${info.bg} ${info.color} rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}
               >
-                <div
-                  className={`w-12 h-12 ${info.bg} ${info.color} rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300`}
-                >
-                  <Icon className="w-6 h-6" />
-                </div>
-                <h3 className="text-lg font-bold text-slate-900 mb-2">
-                  {info.title}
-                </h3>
-                {info.details.map((line, i) => (
-                  <p key={i} className="text-slate-600 text-sm font-medium">
-                    {line}
-                  </p>
-                ))}
-              </motion.div>
-            );
-          })}
+                <info.icon className="w-6 h-6" />
+              </div>
+              <h3 className="text-lg font-bold text-slate-900 mb-2">
+                {info.title}
+              </h3>
+              {info.details.map((line, i) => (
+                <p key={i} className="text-slate-600 text-sm font-medium">
+                  {line}
+                </p>
+              ))}
+            </motion.div>
+          ))}
         </div>
 
-        {/* Main Content: Form & Context Split */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.7 }}
-          className="bg-white rounded-3xl shadow-2xl overflow-hidden border border-slate-100 flex flex-col lg:flex-row"
-        >
-          {/* LEFT: Contact Form */}
+        {/* Main Form Area */}
+        <motion.div className="bg-white rounded-3xl shadow-2xl overflow-hidden border border-slate-100 flex flex-col lg:flex-row">
           <div className="lg:w-7/12 p-8 sm:p-12">
-            <div className="mb-8">
-              <h3 className="text-2xl font-bold text-slate-900 flex items-center gap-2">
-                Send us a Message
-                <MessageSquare className="w-5 h-5 text-blue-500" />
-              </h3>
-              <p className="text-slate-500 text-sm mt-2">
-                Fill out the form below and we will get back to you within 24
-                hours.
-              </p>
-            </div>
+            <h3 className="text-2xl font-bold text-slate-900 mb-8 flex items-center gap-2">
+              Send us a Message{" "}
+              <MessageSquare className="w-5 h-5 text-blue-500" />
+            </h3>
 
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -242,7 +239,6 @@ export default function Contact() {
                   placeholder="Doe"
                 />
               </div>
-
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <InputGroup
                   label="Email Address"
@@ -262,7 +258,6 @@ export default function Contact() {
                   placeholder="+91 999 999 9999"
                 />
               </div>
-
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <InputGroup
                   label="Company"
@@ -276,7 +271,7 @@ export default function Contact() {
                     htmlFor="subject"
                     className="text-sm font-medium text-slate-700"
                   >
-                    Subject <span className="text-red-500">*</span>
+                    Subject *
                   </label>
                   <select
                     id="subject"
@@ -284,23 +279,22 @@ export default function Contact() {
                     value={formData.subject}
                     onChange={handleChange}
                     required
-                    className="flex h-11 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm ring-offset-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                    className="flex h-11 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600"
                   >
                     <option value="">Select a subject...</option>
-                    <option value="inquiry">General Inquiry</option>
-                    <option value="partnership">Partnership</option>
-                    <option value="research">Research Collaboration</option>
-                    <option value="support">Support</option>
+                    <option value="General Inquiry">General Inquiry</option>
+                    <option value="Partnership">Partnership</option>
+                    <option value="Research">Research Collaboration</option>
+                    <option value="Support">Support</option>
                   </select>
                 </div>
               </div>
-
               <div className="flex flex-col gap-1.5">
                 <label
                   htmlFor="message"
                   className="text-sm font-medium text-slate-700"
                 >
-                  Message <span className="text-red-500">*</span>
+                  Message *
                 </label>
                 <textarea
                   id="message"
@@ -309,7 +303,7 @@ export default function Contact() {
                   onChange={handleChange}
                   required
                   rows="4"
-                  className="flex min-h-[120px] w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm ring-offset-white placeholder:text-slate-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2 resize-none"
+                  className="flex min-h-[120px] w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 resize-none"
                   placeholder="How can we help you today?"
                 />
               </div>
@@ -317,11 +311,11 @@ export default function Contact() {
               <button
                 type="submit"
                 disabled={loading || submitted}
-                className="w-full bg-slate-900 text-white hover:bg-slate-800 h-12 rounded-lg font-medium transition-all duration-200 flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed shadow-lg hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0"
+                className="w-full bg-slate-900 text-white h-12 rounded-lg font-medium flex items-center justify-center gap-2 disabled:opacity-70 shadow-lg hover:shadow-xl transition-all"
               >
                 {loading ? (
                   <>
-                    <div className="h-4 w-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                    <Loader2 className="h-4 w-4 animate-spin" />
                     Sending...
                   </>
                 ) : submitted ? (
@@ -342,20 +336,11 @@ export default function Contact() {
                     initial={{ opacity: 0, height: 0 }}
                     animate={{ opacity: 1, height: "auto" }}
                     exit={{ opacity: 0, height: 0 }}
-                    className="overflow-hidden"
                   >
-                    <div className="bg-green-50 border border-green-200 rounded-lg p-4 flex items-center gap-3 mt-4">
-                      <div className="bg-green-100 p-1 rounded-full">
-                        <CheckCircle className="h-4 w-4 text-green-600" />
-                      </div>
-                      <div>
-                        <p className="text-green-800 text-sm font-semibold">
-                          Success!
-                        </p>
-                        <p className="text-green-700 text-sm">
-                          We'll respond to {formData.email} shortly.
-                        </p>
-                      </div>
+                    <div className="bg-green-50 border border-green-200 rounded-lg p-4 flex items-center gap-3 mt-4 text-green-800 text-sm">
+                      <CheckCircle className="h-4 w-4 text-green-600" />
+                      Success! We've received your inquiry from the Contact Us
+                      form.
                     </div>
                   </motion.div>
                 )}
@@ -363,59 +348,33 @@ export default function Contact() {
             </form>
           </div>
 
-          {/* RIGHT: Informational Sidebar */}
           <div className="lg:w-5/12 bg-slate-900 text-white p-8 sm:p-12 relative overflow-hidden flex flex-col justify-between">
-            {/* Decor */}
-            <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500 rounded-full mix-blend-overlay filter blur-3xl opacity-20 translate-x-1/2 -translate-y-1/2" />
-            <div className="absolute bottom-0 left-0 w-64 h-64 bg-indigo-500 rounded-full mix-blend-overlay filter blur-3xl opacity-20 -translate-x-1/2 translate-y-1/2" />
-
             <div className="relative z-10">
               <h3 className="text-2xl font-bold mb-6">Why Partner With Us?</h3>
-              <ul className="space-y-6">
-                {[
-                  "Global expertise in pharmaceutical R&D",
-                  "Rapid response times & dedicated support",
-                  "Ethical, transparent business practices",
-                  "Customized solutions for complex needs",
-                ].map((item, idx) => (
-                  <li key={idx} className="flex items-start gap-3 group">
-                    <div className="h-6 w-6 rounded-full bg-blue-500/20 flex items-center justify-center shrink-0 border border-blue-500/30 group-hover:bg-blue-500 group-hover:text-white transition-colors duration-300">
-                      <ArrowRight className="h-3 w-3 text-blue-400 group-hover:text-white" />
-                    </div>
-                    <span className="text-slate-300 text-sm leading-relaxed group-hover:text-white transition-colors duration-300">
-                      {item}
-                    </span>
-                  </li>
-                ))}
+              <ul className="space-y-6 text-slate-300 text-sm">
+                <li className="flex items-center gap-3">
+                  <ArrowRight size={14} /> Global expertise in R&D
+                </li>
+                <li className="flex items-center gap-3">
+                  <ArrowRight size={14} /> Rapid response times
+                </li>
+                <li className="flex items-center gap-3">
+                  <ArrowRight size={14} /> Ethical business practices
+                </li>
               </ul>
             </div>
-
-            <div className="relative z-10 mt-12">
-              <div className="bg-white/10 backdrop-blur-md rounded-xl p-6 border border-white/10">
-                <div className="flex items-center gap-2 mb-4 text-blue-400">
-                  <Clock className="w-5 h-5" />
-                  <span className="font-bold tracking-wide text-sm uppercase">
-                    Operating Hours
-                  </span>
-                </div>
-                <div className="space-y-2 text-sm text-slate-300">
-                  <div className="flex justify-between border-b border-white/10 pb-2">
-                    <span>Monday - Friday</span>
-                    <span className="text-white font-medium">
-                      9:00 AM - 6:00 PM
-                    </span>
-                  </div>
-                  <div className="flex justify-between border-b border-white/10 pb-2">
-                    <span>Saturday</span>
-                    <span className="text-white font-medium">
-                      10:00 AM - 4:00 PM
-                    </span>
-                  </div>
-                  <div className="flex justify-between pt-1">
-                    <span>Sunday</span>
-                    <span className="text-blue-300">Closed</span>
-                  </div>
-                </div>
+            <div className="bg-white/10 p-6 rounded-xl border border-white/10 mt-12 relative z-10">
+              <div className="flex items-center gap-2 mb-4 text-blue-400 font-bold text-xs uppercase">
+                <Clock size={16} /> Operating Hours
+              </div>
+              <div className="text-sm text-slate-300 space-y-2">
+                <p className="flex justify-between border-b border-white/10 pb-2">
+                  <span>Mon - Fri</span> <span>9 AM - 6 PM</span>
+                </p>
+                <p className="flex justify-between pt-1">
+                  <span>Sunday</span>{" "}
+                  <span className="text-blue-300">Closed</span>
+                </p>
               </div>
             </div>
           </div>
