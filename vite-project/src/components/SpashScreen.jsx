@@ -65,7 +65,7 @@ const SplashScreen = ({ onVideoEnd }) => {
         isFading ? "opacity-0" : "opacity-100"
       }`}
       style={{
-        backgroundColor: "#f2f2f2",
+        backgroundColor: "#000",
       }}
     >
       <div className="relative w-full h-full flex items-center justify-center overflow-hidden">
@@ -77,10 +77,14 @@ const SplashScreen = ({ onVideoEnd }) => {
           preload="auto"
           onTimeUpdate={handleTimeUpdate}
           onEnded={startFadeOut}
-          className={`w-full h-full object-contain mix-blend-multiply transition-transform duration-[5000ms] ease-out ${
+          // className={`w-full h-full object-contain mix-blend-multiply transition-transform duration-[5000ms] ease-out ${
+          //   isZoomed ? "scale-105" : "scale-100"
+          // }`}
+          className={`w-full h-full object-cover absolute inset-0 transition-transform duration-[5000ms] ease-out ${
             isZoomed ? "scale-105" : "scale-100"
           }`}
         />
+
       </div>
 
       {/* Fallback Play Button: Only appears if autoplay is blocked */}
