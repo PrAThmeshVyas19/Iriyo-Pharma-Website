@@ -10,7 +10,6 @@ const SplashScreen = ({ onVideoEnd }) => {
   useEffect(() => {
     const playVideo = async () => {
       if (videoRef.current) {
-        // Essential mobile settings
         videoRef.current.muted = true;
         videoRef.current.defaultMuted = true;
         videoRef.current.playsInline = true;
@@ -19,9 +18,7 @@ const SplashScreen = ({ onVideoEnd }) => {
           await videoRef.current.play();
           setShowPlayButton(false);
         } catch (error) {
-          console.log(
-            "Autoplay blocked by browser. Showing manual play button."
-          );
+          console.log("Autoplay blocked. Showing manual play button.");
           setShowPlayButton(true);
         }
       }
@@ -58,8 +55,7 @@ const SplashScreen = ({ onVideoEnd }) => {
         isFading ? "opacity-0" : "opacity-100"
       }`}
       style={{
-        // Set to match the video background (Light Grey) so edges are invisible when video is small
-        backgroundColor: "#f2f2f2",
+        backgroundColor: "#ffffff",
       }}
     >
       <div className="relative w-full h-full flex items-center justify-center overflow-hidden">
@@ -71,11 +67,11 @@ const SplashScreen = ({ onVideoEnd }) => {
           preload="auto"
           onTimeUpdate={handleTimeUpdate}
           onEnded={startFadeOut}
-          // --- CHANGE HERE ---
-          // Mobile: w-[80%] and object-contain (Small & centered)
-          // Desktop (md:): w-full h-full object-cover (Full screen immersive)
-          // mix-blend-multiply helps blend the edges if the colors aren't 100% perfect
-          className="w-[80%] h-auto md:w-full md:h-full md:object-cover md:absolute md:inset-0 mix-blend-multiply"
+          // --- FIX APPLIED HERE ---
+          // contrast-125: Increases contrast to make the text sharper
+          // brightness-105: "Bleaches" the light grey background to pure white
+          // mix-blend-multiply: Ensures the now-white video background blends perfectly
+          className="w-[95%] h-auto md:w-full md:h-full md:object-cover md:absolute md:inset-0 mix-blend-multiply contrast-125 brightness-105"
         />
       </div>
 
