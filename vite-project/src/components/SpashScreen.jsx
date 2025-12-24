@@ -54,11 +54,11 @@ const SplashScreen = ({ onVideoEnd }) => {
 
   return (
     <div
-      className={`fixed inset-0 z-9999 flex flex-col items-center justify-center w-screen h-screen transition-opacity duration-700 ease-in-out ${
+      className={`fixed inset-0 z-[9999] flex flex-col items-center justify-center w-screen h-screen transition-opacity duration-700 ease-in-out ${
         isFading ? "opacity-0" : "opacity-100"
       }`}
       style={{
-        backgroundColor: "#f2f2f2",
+        backgroundColor: "#000",
       }}
     >
       <div className="relative w-full h-full flex items-center justify-center overflow-hidden">
@@ -70,18 +70,16 @@ const SplashScreen = ({ onVideoEnd }) => {
           preload="auto"
           onTimeUpdate={handleTimeUpdate}
           onEnded={startFadeOut}
-          className={`w-full h-full object-contain mix-blend-multiply transition-transform duration-[5000ms] ease-out ${
-            isZoomed ? "scale-105" : "scale-100"
-          }`}
+          // Removed scale/zoom classes, kept object-cover
+          className="w-full h-full object-cover absolute inset-0"
         />
-
       </div>
 
       {/* Fallback Play Button */}
       {showPlayButton && (
         <button
           onClick={handleManualPlay}
-          className="absolute z-10000 px-6 py-2 bg-black/5 backdrop-blur-sm border border-black/10 rounded-full text-[#1a1a1a] text-xs uppercase tracking-widest animate-pulse hover:bg-black/10 transition-all"
+          className="absolute z-[10000] px-6 py-2 bg-black/5 backdrop-blur-sm border border-black/10 rounded-full text-[#1a1a1a] text-xs uppercase tracking-widest animate-pulse hover:bg-black/10 transition-all"
         >
           Tap to Enter
         </button>
