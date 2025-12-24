@@ -5,34 +5,44 @@ const SplashScreen = ({ onVideoEnd }) => {
   const [isFading, setIsFading] = useState(false);
   const [progress, setProgress] = useState(0);
   const [isZoomed, setIsZoomed] = useState(false);
+  const [showPlayButton, setShowPlayButton] = useState(false); // New state for fallback
   const videoRef = useRef(null);
 
   useEffect(() => {
-    // 1. Trigger the subtle zoom effect for a premium feel
     const zoomTimer = setTimeout(() => setIsZoomed(true), 100);
 
-    // 2. FORCE PLAY for Mobile: Mobile browsers are aggressive with autoplay blocks.
-    if (videoRef.current) {
-      videoRef.current.defaultMuted = true; // Required for mobile
-      videoRef.current.muted = true;        // Required for mobile
-      
-      const playPromise = videoRef.current.play();
-      
-      if (playPromise !== undefined) {
-        playPromise
-          .then(() => {
-            // Video started playing successfully
-          })
-          .catch((error) => {
-            console.error("Autoplay was prevented on mobile:", error);
-            // Fallback: If mobile blocks it entirely, just finish after a 3s delay
-            setTimeout(() => startFadeOut(), 3000);
-          });
+    const playVideo = async () => {
+      if (videoRef.current) {
+        // Essential mobile settings
+        videoRef.current.muted = true;
+        videoRef.current.defaultMuted = true;
+        videoRef.current.playsInline = true;
+
+        try {
+          await videoRef.current.play();
+          // If successful, ensure button is hidden
+          setShowPlayButton(false);
+        } catch (error) {
+          console.log(
+            "Autoplay blocked by browser. Showing manual play button."
+          );
+          // If autoplay is blocked, show the "Enter" button
+          setShowPlayButton(true);
+        }
       }
-    }
+    };
+
+    playVideo();
 
     return () => clearTimeout(zoomTimer);
   }, []);
+
+  const handleManualPlay = () => {
+    if (videoRef.current) {
+      videoRef.current.play();
+      setShowPlayButton(false);
+    }
+  };
 
   const handleTimeUpdate = () => {
     if (videoRef.current && videoRef.current.duration) {
@@ -55,45 +65,54 @@ const SplashScreen = ({ onVideoEnd }) => {
         isFading ? "opacity-0" : "opacity-100"
       }`}
       style={{
-        backgroundColor: "#f2f2f2", // Matches the background in splash.mp4
+        backgroundColor: "#f2f2f2",
       }}
     >
       <div className="relative w-full h-full flex items-center justify-center overflow-hidden">
         <video
           ref={videoRef}
-          autoPlay
+          src={splashVideo} // MOVED SRC HERE for better mobile support
           muted
-          playsInline // Essential for iOS to prevent opening in native player
+          playsInline
           preload="auto"
           onTimeUpdate={handleTimeUpdate}
           onEnded={startFadeOut}
           className={`w-full h-full object-contain mix-blend-multiply transition-transform duration-[5000ms] ease-out ${
             isZoomed ? "scale-105" : "scale-100"
           }`}
+        />
+      </div>
+
+      {/* Fallback Play Button: Only appears if autoplay is blocked */}
+      {showPlayButton && (
+        <button
+          onClick={handleManualPlay}
+          className="absolute z-[10000] px-6 py-2 bg-black/5 backdrop-blur-sm border border-black/10 rounded-full text-[#1a1a1a] text-xs uppercase tracking-widest animate-pulse hover:bg-black/10 transition-all"
         >
-          <source src={splashVideo} type="video/mp4" />
-          Your browser does not support the video tag.
-        </video>
-      </div>
+          Tap to Enter
+        </button>
+      )}
 
-      {/* Loading UI - Matched to image_64a225.png */}
-      <div className="absolute bottom-16 md:bottom-24 w-64 md:w-80 flex flex-col items-center px-4">
-        <div className="w-full h-[1.5px] bg-black/5 overflow-hidden rounded-full">
-          <div
-            className="h-full bg-[#1a1a1a] transition-all duration-300 ease-linear"
-            style={{ width: `${progress}%` }}
-          />
-        </div>
+      {/* Loading UI */}
+      {!showPlayButton && (
+        <div className="absolute bottom-16 md:bottom-24 w-64 md:w-80 flex flex-col items-center px-4">
+          <div className="w-full h-[1.5px] bg-black/5 overflow-hidden rounded-full">
+            <div
+              className="h-full bg-[#1a1a1a] transition-all duration-300 ease-linear"
+              style={{ width: `${progress}%` }}
+            />
+          </div>
 
-        <div className="w-full flex justify-between items-center mt-5">
-          <span className="text-[#999999] text-[9px] uppercase tracking-[0.6em] font-bold">
-            Loading
-          </span>
-          <span className="text-[#1a1a1a] text-[11px] font-bold font-mono">
-            {Math.round(progress)}%
-          </span>
+          <div className="w-full flex justify-between items-center mt-5">
+            <span className="text-[#999999] text-[9px] uppercase tracking-[0.6em] font-bold">
+              Loading
+            </span>
+            <span className="text-[#1a1a1a] text-[11px] font-bold font-mono">
+              {Math.round(progress)}%
+            </span>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };
