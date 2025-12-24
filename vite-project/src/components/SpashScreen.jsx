@@ -58,7 +58,8 @@ const SplashScreen = ({ onVideoEnd }) => {
         isFading ? "opacity-0" : "opacity-100"
       }`}
       style={{
-        backgroundColor: "#000",
+        // Set to match the video background (Light Grey) so edges are invisible when video is small
+        backgroundColor: "#f2f2f2",
       }}
     >
       <div className="relative w-full h-full flex items-center justify-center overflow-hidden">
@@ -70,8 +71,11 @@ const SplashScreen = ({ onVideoEnd }) => {
           preload="auto"
           onTimeUpdate={handleTimeUpdate}
           onEnded={startFadeOut}
-          // Removed scale/zoom classes, kept object-cover
-          className="w-full h-full object-cover absolute inset-0"
+          // --- CHANGE HERE ---
+          // Mobile: w-[80%] and object-contain (Small & centered)
+          // Desktop (md:): w-full h-full object-cover (Full screen immersive)
+          // mix-blend-multiply helps blend the edges if the colors aren't 100% perfect
+          className="w-[80%] h-auto md:w-full md:h-full md:object-cover md:absolute md:inset-0 mix-blend-multiply"
         />
       </div>
 
