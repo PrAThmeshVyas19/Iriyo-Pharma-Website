@@ -6,13 +6,13 @@ import {
   useSpring,
   useTransform,
 } from "framer-motion";
-import {
-  ComposableMap,
-  Geographies,
-  Geography,
-  Marker,
-  Annotation,
-} from "react-simple-maps";
+// import {
+//   ComposableMap,
+//   Geographies,
+//   Geography,
+//   Marker,
+//   Annotation,
+// } from "react-simple-maps";
 import {
   Award,
   Users,
@@ -454,7 +454,7 @@ export default function About() {
               </Section>
 
               {/* RIGHT: UPDATED PRESENCE MAP (Maharashtra Focused) */}
-              <Section>
+              {/* <Section>
                 <div className="relative bg-slate-900 rounded-[2.5rem] p-1 text-white overflow-hidden shadow-2xl h-[600px] border border-slate-700">
                   <div className="absolute top-6 left-6 z-10 bg-slate-800/90 backdrop-blur-md px-4 py-2 rounded-full border border-slate-700 flex items-center gap-2 shadow-lg">
                     <span className="relative flex h-3 w-3">
@@ -464,13 +464,13 @@ export default function About() {
                     <span className="text-sm font-semibold tracking-wide">
                       Live Operations
                     </span>
-                  </div>
+                  </div> */}
 
-                  {/* --- REAL MAP COMPONENT --- */}
-                  <WorldMap />
+              {/* --- REAL MAP COMPONENT --- */}
+              {/* <WorldMap /> */}
 
-                  {/* Overlay Info Card */}
-                  <div className="absolute bottom-6 left-6 right-6 bg-slate-800/80 backdrop-blur-md p-6 rounded-2xl border border-slate-700">
+              {/* Overlay Info Card */}
+              {/* <div className="absolute bottom-6 left-6 right-6 bg-slate-800/80 backdrop-blur-md p-6 rounded-2xl border border-slate-700">
                     <div className="flex items-start justify-between">
                       <div>
                         <h4 className="text-lg font-bold text-white mb-1">
@@ -491,7 +491,7 @@ export default function About() {
                     </div>
                   </div>
                 </div>
-              </Section>
+              </Section> */}
             </div>
           </div>
         </section>
