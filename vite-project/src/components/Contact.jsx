@@ -10,6 +10,10 @@ import {
   ArrowRight,
   MessageSquare,
   Loader2,
+  Linkedin,
+  Twitter,
+  Facebook,
+  Instagram,
 } from "lucide-react";
 
 // REPLACE THIS with your actual Google Apps Script Web App URL
@@ -101,13 +105,11 @@ export default function Contact() {
     setLoading(true);
 
     try {
-      // Adding the 'source' field here to bifurcate in Google Sheets
       const payload = {
         ...formData,
         source: "Contact Us",
       };
 
-      // Send data to Google Sheets via Apps Script
       await fetch(APPS_SCRIPT_URL, {
         method: "POST",
         mode: "no-cors",
@@ -142,8 +144,19 @@ export default function Contact() {
   const contactInfo = [
     {
       icon: MapPin,
-      title: "Headquarters",
-      details: ["Pune, Maharashtra", "India, 411001"],
+      title: "Registered Office",
+      details: [
+        "Iriyo Pharma Pvt.Ltd \nEisha Zenith, Indira School Road, \nTathawade, Pimpri-Chinchwad, \nPune-411033, Maharashtra, India.",
+      ],
+      color: "text-blue-600",
+      bg: "bg-blue-50",
+    },
+    {
+      icon: MapPin,
+      title: "Corporate Office",
+      details: [
+        "4, Ground Floor, Elegant Aariv, \nLaxman Nagar, Balewadi, \nPune-411045, Maharashtra, India.",
+      ],
       color: "text-blue-600",
       bg: "bg-blue-50",
     },
@@ -160,6 +173,33 @@ export default function Contact() {
       details: ["info@iriyopharma.com", "careers@iriyopharma.com"],
       color: "text-teal-600",
       bg: "bg-teal-50",
+    },
+  ];
+
+  const socialLinks = [
+    {
+      icon: Linkedin,
+      href: "#",
+      label: "LinkedIn",
+      color: "text-blue-700 bg-blue-50 hover:bg-blue-100",
+    },
+    {
+      icon: Twitter,
+      href: "https://www.x.com/Pharma_Iriyo",
+      label: "Twitter",
+      color: "text-sky-500 bg-sky-50 hover:bg-sky-100",
+    },
+    {
+      icon: Facebook,
+      href: "#",
+      label: "Facebook",
+      color: "text-blue-600 bg-blue-50 hover:bg-blue-100",
+    },
+    {
+      icon: Instagram,
+      href: "https://www.instagram.com/iriyo_pharma/",
+      label: "Instagram",
+      color: "text-pink-600 bg-pink-50 hover:bg-pink-100",
     },
   ];
 
@@ -182,21 +222,25 @@ export default function Contact() {
           </div>
           <h2 className="text-4xl md:text-5xl font-extrabold text-slate-900 mb-6 tracking-tight">
             Get in Touch With <br className="hidden md:block" />
-            <span className="text-transparent bg-clip-text bg-linear-to-r from-blue-600 to-indigo-600">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">
               Our Expert Team
             </span>
           </h2>
         </motion.div>
 
-        {/* Info Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+        {/* Info Grid - Updated for better alignment */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           {contactInfo.map((info, index) => (
             <motion.div
               key={index}
-              className="group bg-white/60 backdrop-blur-md rounded-2xl p-8 border border-white/50 shadow-sm hover:shadow-xl transition-all"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: index * 0.1 }}
+              className="group bg-white/60 backdrop-blur-md rounded-2xl p-6 border border-white/50 shadow-sm hover:shadow-xl transition-all text-center lg:text-left h-full"
             >
               <div
-                className={`w-12 h-12 ${info.bg} ${info.color} rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}
+                className={`w-12 h-12 ${info.bg} ${info.color} rounded-xl flex items-center justify-center mb-4 mx-auto lg:mx-0 group-hover:scale-110 transition-transform`}
               >
                 <info.icon className="w-6 h-6" />
               </div>
@@ -204,13 +248,34 @@ export default function Contact() {
                 {info.title}
               </h3>
               {info.details.map((line, i) => (
-                <p key={i} className="text-slate-600 text-sm font-medium">
+                <p
+                  key={i}
+                  className="text-slate-600 text-sm font-medium whitespace-pre-line leading-relaxed"
+                >
                   {line}
                 </p>
               ))}
             </motion.div>
           ))}
         </div>
+
+        {/* Social Media Links */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          className="flex flex-wrap justify-center gap-4 mb-16"
+        >
+          {socialLinks.map((social, idx) => (
+            <a
+              key={idx}
+              href={social.href}
+              className={`p-4 rounded-full ${social.color} transition-all duration-300 hover:-translate-y-1 shadow-sm border border-black/5`}
+              aria-label={social.label}
+            >
+              <social.icon size={24} />
+            </a>
+          ))}
+        </motion.div>
 
         {/* Main Form Area */}
         <motion.div className="bg-white rounded-3xl shadow-2xl overflow-hidden border border-slate-100 flex flex-col lg:flex-row">

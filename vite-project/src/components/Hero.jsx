@@ -124,8 +124,9 @@ export default function Hero() {
           transition={{ duration: 0.8, delay: 0.6 }}
           className="max-w-2xl text-base sm:text-lg md:text-xl text-slate-200 mb-10 leading-relaxed font-light"
         >
-          Leading pharmaceutical company dedicated to developing life-changing
-          medicines and improving patient outcomes worldwide.
+          IRIYO Pharma focuses on delivering high-quality pharmaceutical
+          solutions that meet the expectations of healthcare professionals and
+          patients
         </motion.p>
 
         <motion.div

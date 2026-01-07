@@ -7,22 +7,31 @@ import {
   useTransform,
 } from "framer-motion";
 import {
+  ComposableMap,
+  Geographies,
+  Geography,
+  Marker,
+  Annotation,
+} from "react-simple-maps";
+import {
   Award,
   Users,
   Globe,
   Heart,
-  ArrowRight,
   Target,
   Eye,
   ShieldCheck,
-  Microscope,
   Lightbulb,
   Linkedin,
   Quote,
+  Map as MapIcon,
+  Navigation,
   Sprout,
   HandHeart,
   ChevronRight,
 } from "lucide-react";
+
+import IriyoLogo from "../assets/logo/logo.png";
 
 // --- Utility: Animated Counter ---
 function Counter({ value, suffix = "" }) {
@@ -60,113 +69,151 @@ const Section = ({ children, className = "" }) => {
   );
 };
 
+// --- Updated Component: Maharashtra Focused Map ---
+const geoUrl = "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json";
+
+// Updated Markers based on your image (Maharashtra, India)
+const markers = [
+  { name: "Pune", coordinates: [73.8567, 18.5204] },
+  { name: "Nagpur", coordinates: [79.0882, 21.1458] },
+  { name: "Bhandara", coordinates: [79.657, 21.1777] },
+  { name: "Gondia", coordinates: [80.221, 21.4624] },
+  { name: "Chandrapur", coordinates: [79.2961, 19.9615] },
+];
+
+const WorldMap = () => {
+  return (
+    <div className="w-full h-full absolute inset-0 rounded-[2.5rem] overflow-hidden bg-slate-900">
+      <ComposableMap
+        projection="geoMercator"
+        projectionConfig={{
+          scale: 3500, // High zoom to focus on Maharashtra
+          center: [78, 20], // Center coordinates for Maharashtra
+        }}
+        style={{ width: "100%", height: "100%" }}
+      >
+        <Geographies geography={geoUrl}>
+          {({ geographies }) =>
+            geographies.map((geo) => {
+              // Highlight India slightly differently
+              const isIndia = geo.properties.name === "India";
+              return (
+                <Geography
+                  key={geo.rsmKey}
+                  geography={geo}
+                  fill={isIndia ? "#1e293b" : "#0f172a"} // Highlight India vs World
+                  stroke="#334155"
+                  strokeWidth={0.5}
+                  style={{
+                    default: { outline: "none" },
+                    hover: { fill: "#1e293b", outline: "none" },
+                    pressed: { outline: "none" },
+                  }}
+                />
+              );
+            })
+          }
+        </Geographies>
+
+        {/* Render Markers with Names */}
+        {markers.map(({ name, coordinates }) => (
+          <Marker key={name} coordinates={coordinates}>
+            <g
+              fill="none"
+              stroke="#3b82f6"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              transform="translate(-12, -24)"
+            >
+              <circle cx="12" cy="10" r="3" fill="#3b82f6" />
+              <path d="M12 21.7C17.3 17 20 13 20 10a8 8 0 1 0-16 0c0 3 2.7 7 8 11.7z" />
+            </g>
+            <text
+              textAnchor="middle"
+              y={15} // Position text below the pin
+              style={{
+                fontFamily: "system-ui",
+                fill: "white",
+                fontSize: "10px", // Increased font size for readability
+                fontWeight: "bold",
+                textShadow: "0px 2px 4px rgba(0,0,0,0.8)", // Shadow for readability
+              }}
+            >
+              {name}
+            </text>
+          </Marker>
+        ))}
+      </ComposableMap>
+
+      {/* Map Overlay Gradient */}
+      <div className="absolute inset-0 pointer-events-none bg-gradient-to-t from-slate-900 via-transparent to-transparent opacity-60" />
+    </div>
+  );
+};
+
 // --- Background Component ---
 const BackgroundLayer = () => (
   <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden">
-    {/* 1. Dot Pattern */}
-    <svg
-      className="absolute inset-0 h-full w-full stroke-slate-300/30 [mask-image:radial-gradient(100%_100%_at_top_right,white,transparent)]"
-      aria-hidden="true"
-    >
-      {/* FIXED: Uncommented defs to allow pattern rendering */}
-      {/* <defs>
-        <pattern
-          id="grid-pattern"
-          width={24}
-          height={24}
-          x="50%"
-          y={-1}
-          patternUnits="userSpaceOnUse"
-        >
-          <path
-            d="M1 1h2v2H1z"
-            fill="currentColor"
-            className="fill-slate-300/50"
-          />
-        </pattern>
-      </defs> */}
-      <rect
-        width="100%"
-        height="100%"
-        strokeWidth={0}
-        fill="url(#grid-pattern)"
-      />
-    </svg>
-
-    {/* 2. Animated Blobs */}
     <div className="absolute top-0 left-0 w-96 h-96 bg-blue-300 rounded-full mix-blend-multiply filter blur-[80px] opacity-30 animate-blob" />
     <div className="absolute top-0 right-0 w-96 h-96 bg-purple-300 rounded-full mix-blend-multiply filter blur-[80px] opacity-30 animate-blob animation-delay-2000" />
     <div className="absolute bottom-0 left-20 w-96 h-96 bg-indigo-300 rounded-full mix-blend-multiply filter blur-[80px] opacity-30 animate-blob animation-delay-4000" />
-    <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-teal-200 rounded-full mix-blend-multiply filter blur-[80px] opacity-20 animate-blob animation-delay-2000" />
   </div>
 );
 
 // --- Data ---
-const stats = [
-  { icon: Users, value: "10000", suffix: "+", label: "Employees" },
-  { icon: Globe, value: "75", suffix: "+", label: "Countries" },
-  { icon: Award, value: "200", suffix: "+", label: "Patents" },
-  { icon: Heart, value: "50", suffix: "M+", label: "Patients Helped" },
-];
-
 const values = [
   {
     icon: ShieldCheck,
     title: "Integrity",
-    desc: "We act with unyielding honesty and transparency, ensuring trust is the foundation of every scientific breakthrough we achieve.",
+    desc: "We uphold integrity by practicing honesty, transparency, and ethics in every aspect of our work.",
   },
   {
     icon: Lightbulb,
     title: "Innovation",
-    desc: "We challenge the status quo, relentlessly pursuing novel technologies and solutions to the world's most complex medical problems.",
+    desc: "It is our pathway to transform ideas into meaningful healthcare solutions.",
   },
   {
     icon: HandHeart,
     title: "Responsibility",
-    desc: "We hold ourselves accountable to our patients, our partners, and the planet, ensuring sustainable and ethical practices in all we do.",
+    desc: "We act responsible by placing patient safety, quality and trust at the center of everything we do.",
   },
   {
     icon: Sprout,
     title: "Humility",
-    desc: "We listen first. We recognize that great ideas come from everywhere and that there is always more to learn in the pursuit of science.",
+    desc: "We remain humble in our pursuit of excellence , valuing people over pride.",
   },
 ];
 
 const directors = [
   {
-    name: "Dr. Eleanor Vance",
-    role: "Chairperson & CEO",
+    name: "Mr. Sawan Bahekar",
+    role: "Director",
     image:
       "https://images.pexels.com/photos/1181686/pexels-photo-1181686.jpeg?auto=compress&cs=tinysrgb&w=400",
+    bio: "Sawan Bahekar holds a Master’s degree in Pharmaceutical Sciences and brings over a decade of professional experience in the pharmaceutical sector. Alongside his expertise in healthcare, he is a passionate wildlife expert and actively leads socio-economic development projects. His work focuses on strengthening community livelihoods and contributing to sustainable development initiatives at the grassroots level. Driven by a compassionate vision, Sawan is willing to deliver accessible and equitable medical facilities for all segments of society. ",
   },
   {
-    name: "James Sterling",
-    role: "Chief Financial Officer",
-    image:
-      "https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=400",
-  },
-  {
-    name: "Dr. Arin Kumar",
-    role: "Head of R&D",
+    name: "Ms. Pooja Pawar",
+    role: "Director",
     image:
       "https://images.pexels.com/photos/2182970/pexels-photo-2182970.jpeg?auto=compress&cs=tinysrgb&w=400",
+    bio: "Pooja Pawar is a Pharmacy graduate with over 10 years of professional experience in the pharmaceutical sector. Her core competencies include pharmaceutical distribution, exports, and hospital supply operations. She brings strong expertise in sales management and business development. With effective leadership, strategic planning, and team coordination skills, she has played an important role in strengthening sales operations and supporting the company’s overall growth and market presence. ",
   },
   {
-    name: "Sarah Jenkins",
-    role: "Board Director",
+    name: "Dr. Kamlesh Pathak",
+    role: "Director",
     image:
       "https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=400",
+    bio: "Dr. Kamlesh Pathak is a healthcare industry leader with 17+ years of experience across Healthcare IT and pharmaceutical Industry. He holds a BAMS and an MBA in Healthcare IT. Blending clinical expertise with strategic business leadership. For the past five years, he has served as Director of a pharmaceutical company, leading strategy, operations, and market growth while upholding quality and compliance standards. He is recognized for his results-driven leadership, deep industry insight, and commitment to building scalable, high-performance healthcare organizations.",
   },
 ];
 
 export default function About() {
   return (
-    // Main Container with fixed background
     <div className="relative min-h-screen w-full bg-slate-50 selection:bg-blue-100 font-sans text-slate-900">
-      {/* GLOBAL BACKGROUND */}
       <BackgroundLayer />
 
-      {/* CONTENT WRAPPER (z-index higher than background) */}
       <div className="relative z-10">
         {/* 1. HERO */}
         <section className="relative py-12 lg:py-14">
@@ -183,40 +230,20 @@ export default function About() {
               </motion.div>
 
               <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight text-slate-900 mb-6 drop-shadow-sm">
-                Medicine Built on Trust <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">
-                  Delivered with Integrity
+                I love Iriyo <br />
+                <span className="text-transparent bg-clip-text bg-gradient-to-r bg-pink-600">
+                  ❤️
                 </span>
               </h1>
               <p className="text-lg md:text-xl text-slate-600 leading-relaxed max-w-2xl mx-auto">
-                With over 30 years of excellence, Iriyo Pharma is dedicated to
-                discovering, developing, and delivering medicines that address
-                the world's most pressing health challenges.
+                IRIYO Pharma is a pharmaceutical company founded by experienced
+                professionals with extensive exposure to the healthcare and
+                pharmaceutical sectors across Maharashtra. Built on a strong
+                foundation of domain knowledge, practical experience, and
+                ethical values, the company is committed to contributing
+                meaningfully to the evolving healthcare landscape in India.
               </p>
             </Section>
-
-            {/* Stats Grid - Glassmorphism */}
-            {/* <div className="grid grid-cols-2 md:grid-cols-4 gap-8 rounded-3xl border border-white/40 bg-white/40 backdrop-blur-lg shadow-xl p-8 lg:p-12">
-              {stats.map((stat, idx) => {
-                const Icon = stat.icon;
-                return (
-                  <Section key={idx} className="text-center">
-                    <div className="flex justify-center mb-4">
-                      <div className="p-3 bg-white rounded-2xl text-blue-600 shadow-sm ring-1 ring-slate-900/5">
-                        {Icon && <Icon className="w-6 h-6" />}
-                      </div>
-                    </div>
-                    <div className="text-3xl md:text-4xl font-bold text-slate-900 tracking-tight mb-1">
-                      <Counter value={stat.value} />
-                      {stat.suffix}
-                    </div>
-                    <div className="text-sm font-semibold text-slate-500 uppercase tracking-wider">
-                      {stat.label}
-                    </div>
-                  </Section>
-                );
-              })}
-            </div> */}
           </div>
         </section>
 
@@ -224,7 +251,6 @@ export default function About() {
         <section className="py-14">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
-              {/* Mission Card */}
               <Section className="group relative overflow-hidden rounded-[2rem] bg-slate-900/95 backdrop-blur-md text-white p-8 lg:p-12 shadow-2xl ring-1 ring-white/10">
                 <div className="absolute top-0 right-0 p-8 opacity-10 transition-transform duration-700 group-hover:scale-110 group-hover:rotate-12">
                   <Target size={240} />
@@ -238,16 +264,18 @@ export default function About() {
                       Our Mission
                     </h3>
                     <p className="text-slate-300 text-lg leading-relaxed">
-                      Our mission is to deliver high-quality medicines with
-                      unwavering integrity, foster resilience in healthcare
-                      delivery, and continuously pursue innovation to improve
-                      patient outcomes.
+                      Our mission is to serve with care and humility by
+                      delivering quality medicines through ethical practices,
+                      resilient healthcare solutions, and responsible
+                      innovation. By caring for and protecting every “I”, we
+                      remain committed to accessibility, patient safety, and
+                      trust—working purposefully to support healthier lives and
+                      stronger healthcare systems.
                     </p>
                   </div>
                 </div>
               </Section>
 
-              {/* Vision Card */}
               <Section className="group relative overflow-hidden rounded-[2rem] border border-white/50 bg-white/60 backdrop-blur-md p-8 lg:p-12 shadow-lg">
                 <div className="absolute bottom-0 right-0 p-8 opacity-5 transition-transform duration-700 group-hover:scale-110 group-hover:-rotate-12">
                   <Eye size={240} />
@@ -261,10 +289,12 @@ export default function About() {
                       Our Vision
                     </h3>
                     <p className="text-slate-600 text-lg leading-relaxed">
-                      To lead with ethics and excellence in providing safe,
-                      effective, and accessible medicines empowering healthier
-                      lives, nurturing well-being, and building a sustainable
-                      future.
+                      We envision a future where care and humility guide
+                      healthcare delivery, ensuring that every “I” is protected
+                      and empowered through ethical pharmaceutical practices. By
+                      fostering resilience and innovation, we aim to create
+                      trusted medical solutions that enhance patient outcomes
+                      and promote healthier societies.
                     </p>
                   </div>
                 </div>
@@ -284,14 +314,10 @@ export default function About() {
                 The principles that guide our science and our spirit.
               </p>
             </Section>
-
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {values.map((val, idx) => {
                 const VIcon = val.icon;
-
-                // FIXED: Safety check to prevent crash if icon is undefined
                 if (!VIcon) return null;
-
                 return (
                   <motion.div
                     key={idx}
@@ -317,8 +343,8 @@ export default function About() {
           </div>
         </section>
 
-        {/* 4. LEADERSHIP (Mobile-Friendly Horizontal Scroll) */}
-        {/* <section className="py-14">
+        {/* 4. LEADERSHIP */}
+        <section className="py-14">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex flex-col md:flex-row justify-between items-end mb-8 md:mb-12">
               <Section>
@@ -329,23 +355,8 @@ export default function About() {
                   The visionaries guiding Iriyo Pharma.
                 </p>
               </Section>
-              <Section>
-                <div className="hidden md:flex">
-                  <button className="flex items-center gap-2 text-sm font-semibold text-blue-600 hover:text-blue-700 transition-colors mt-4 bg-white/50 px-4 py-2 rounded-full border border-blue-100">
-                    View Chart <ArrowRight size={16} />
-                  </button>
-                </div>
-              </Section>
             </div>
-
-            
-            <div className="md:hidden flex items-center gap-2 text-sm text-slate-400 mb-4 animate-pulse">
-              <span>Swipe to see more</span>
-              <ChevronRight size={16} />
-            </div>
-
-           
-            <div className="flex overflow-x-auto pb-8 -mx-4 px-4 md:grid md:grid-cols-2 lg:grid-cols-4 md:gap-8 md:overflow-visible md:pb-0 md:px-0 snap-x snap-mandatory hide-scrollbar">
+            <div className="flex overflow-x-auto pb-8 -mx-4 px-4 md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-8 md:overflow-visible md:pb-0 md:px-0 snap-x snap-mandatory hide-scrollbar">
               {directors.map((person, idx) => (
                 <motion.div
                   key={idx}
@@ -353,9 +364,9 @@ export default function About() {
                   whileInView={{ opacity: 1, scale: 1 }}
                   viewport={{ once: true }}
                   transition={{ delay: idx * 0.1 }}
-                  className="group relative min-w-[280px] md:min-w-0 snap-center mr-6 md:mr-0 last:mr-0"
+                  className="group relative min-w-[300px] md:min-w-0 snap-center mr-6 md:mr-0 last:mr-0 flex flex-col h-full"
                 >
-                  <div className="relative aspect-[4/5] overflow-hidden rounded-2xl bg-white/50 shadow-inner mb-4">
+                  <div className="relative aspect-[4/4] overflow-hidden rounded-2xl bg-white/50 shadow-inner mb-4">
                     <img
                       src={person.image}
                       alt={person.name}
@@ -370,31 +381,124 @@ export default function About() {
                       </a>
                     </div>
                   </div>
-                  <div className="bg-white/40 backdrop-blur-sm p-4 rounded-xl border border-white/50 shadow-sm">
-                    <h4 className="text-lg font-bold text-slate-900">
-                      {person.name}
-                    </h4>
-                    <p className="text-blue-600 font-medium text-sm">
-                      {person.role}
+                  <div className="bg-white/60 backdrop-blur-sm p-6 rounded-xl border border-white/50 shadow-sm flex-grow hover:shadow-md transition-shadow duration-300">
+                    <div className="mb-3">
+                      <h4 className="text-lg font-bold text-slate-900">
+                        {person.name}
+                      </h4>
+                      <p className="text-blue-600 font-medium text-sm">
+                        {person.role}
+                      </p>
+                    </div>
+                    <p className="text-slate-500 text-sm leading-relaxed border-t border-slate-100 pt-3">
+                      {person.bio}
                     </p>
                   </div>
                 </motion.div>
               ))}
             </div>
+          </div>
+        </section>
 
-            <div className="mt-6 text-center md:hidden">
-              <button className="inline-flex items-center gap-2 text-sm font-semibold text-blue-600 bg-white/50 px-5 py-2.5 rounded-full border border-blue-100 shadow-sm">
-                View Organizational Chart <ArrowRight size={16} />
-              </button>
+        {/* 5. BRAND IDENTITY & PRESENCE (Redesigned & Updated Map) */}
+        <section className="py-20 relative overflow-hidden">
+          <div className="absolute top-1/2 left-0 w-full h-full bg-slate-100 -skew-y-3 -z-10 origin-left scale-110" />
+
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="grid lg:grid-cols-2 gap-16 items-start">
+              {/* LEFT: REDESIGNED LOGO STORY */}
+              <Section className="h-full">
+                <div className="relative bg-white/80 backdrop-blur-sm p-8 rounded-[2rem] border border-white shadow-xl h-full flex flex-col">
+                  {/* Logo Header */}
+                  <div className="flex items-center justify-between mb-8">
+                    <div className="h-16 w-16 bg-blue-100 rounded-2xl flex items-center justify-center text-blue-600">
+                      <ShieldCheck size={32} />
+                    </div>
+                    <span className="text-xs font-bold tracking-widest text-slate-400 uppercase">
+                      Brand Identity
+                    </span>
+                  </div>
+
+                  {/* Main Logo Display */}
+                  <div className="flex-grow flex items-center justify-center py-8">
+                    <img
+                      src={IriyoLogo}
+                      alt="Iriyo Pharma Logo"
+                      className="w-48 object-contain hover:scale-105 transition-transform duration-500 drop-shadow-2xl"
+                    />
+                  </div>
+
+                  {/* Story Footer */}
+                  <div className="mt-8 border-t border-slate-100 pt-6">
+                    <h3 className="text-2xl font-bold text-slate-900 mb-2">
+                      The Mark of Care
+                    </h3>
+                    <p className="text-slate-600 leading-relaxed mb-4">
+                      Our identity is rooted in the Japanese word{" "}
+                      <span className="font-semibold text-blue-600 italic">
+                        "Iriyo"
+                      </span>{" "}
+                      (Medical Care). It symbolizes our unwavering promise to
+                      protect, heal, and serve with integrity.
+                    </p>
+                    <div className="flex items-center gap-2 text-sm text-slate-400 font-medium">
+                      <span className="w-2 h-2 rounded-full bg-blue-500"></span>
+                      <span>Trust</span>
+                      <span className="w-2 h-2 rounded-full bg-blue-500 ml-2"></span>
+                      <span>Ethics</span>
+                      <span className="w-2 h-2 rounded-full bg-blue-500 ml-2"></span>
+                      <span>Quality</span>
+                    </div>
+                  </div>
+                </div>
+              </Section>
+
+              {/* RIGHT: UPDATED PRESENCE MAP (Maharashtra Focused) */}
+              <Section>
+                <div className="relative bg-slate-900 rounded-[2.5rem] p-1 text-white overflow-hidden shadow-2xl h-[600px] border border-slate-700">
+                  <div className="absolute top-6 left-6 z-10 bg-slate-800/90 backdrop-blur-md px-4 py-2 rounded-full border border-slate-700 flex items-center gap-2 shadow-lg">
+                    <span className="relative flex h-3 w-3">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                      <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
+                    </span>
+                    <span className="text-sm font-semibold tracking-wide">
+                      Live Operations
+                    </span>
+                  </div>
+
+                  {/* --- REAL MAP COMPONENT --- */}
+                  <WorldMap />
+
+                  {/* Overlay Info Card */}
+                  <div className="absolute bottom-6 left-6 right-6 bg-slate-800/80 backdrop-blur-md p-6 rounded-2xl border border-slate-700">
+                    <div className="flex items-start justify-between">
+                      <div>
+                        <h4 className="text-lg font-bold text-white mb-1">
+                          Regional Stronghold
+                        </h4>
+                        <p className="text-slate-400 text-sm">
+                          Primary distribution hubs across Maharashtra.
+                        </p>
+                      </div>
+                      <div className="text-right">
+                        <span className="block text-2xl font-bold text-blue-400">
+                          5+
+                        </span>
+                        <span className="text-xs text-slate-500 uppercase tracking-wider">
+                          Key Cities
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </Section>
             </div>
           </div>
-        </section> */}
+        </section>
 
-        {/* 5. QUOTE SECTION */}
+        {/* 6. QUOTE SECTION */}
         <section className="py-24 relative overflow-hidden">
-          {/* Dark Glass Overlay for Footer */}
           <div className="absolute inset-0 bg-slate-900/90 backdrop-blur-xl -z-10" />
-
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[500px] bg-blue-600/20 blur-[100px] rounded-full pointer-events-none" />
 
           <motion.div
