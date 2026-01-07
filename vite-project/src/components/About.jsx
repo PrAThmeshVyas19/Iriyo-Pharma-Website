@@ -33,6 +33,10 @@ import {
 
 import IriyoLogo from "../assets/logo/logo.png";
 
+// for location maps
+import FreePremiumMap from "../components/FreePremiumMap";
+
+
 // --- Utility: Animated Counter ---
 function Counter({ value, suffix = "" }) {
   const ref = useRef(null);
@@ -405,7 +409,10 @@ export default function About() {
           <div className="absolute top-1/2 left-0 w-full h-full bg-slate-100 -skew-y-3 -z-10 origin-left scale-110" />
 
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid lg:grid-cols-2 gap-16 items-start">
+
+            {/* <div className="grid lg:grid-cols-2 gap-16 items-start"> // prevous chanegs map cha same size yavi sathi */}
+            <div className="grid lg:grid-cols-2 gap-16 items-stretch">
+
               {/* LEFT: REDESIGNED LOGO STORY */}
               <Section className="h-full">
                 <div className="relative bg-white/80 backdrop-blur-sm p-8 rounded-[2rem] border border-white shadow-xl h-full flex flex-col">
@@ -492,6 +499,12 @@ export default function About() {
                   </div>
                 </div>
               </Section> */}
+              <Section className="h-full">
+                <div className="h-full min-h-[560px]">
+                  <FreePremiumMap className="h-full" />
+                </div>
+              </Section>
+
             </div>
           </div>
         </section>
