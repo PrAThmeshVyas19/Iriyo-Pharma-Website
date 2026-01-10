@@ -149,7 +149,7 @@ export default function Products() {
         >
           <div className="text-center mb-10">
             <h3 className="text-sm font-bold text-slate-400 uppercase tracking-widest">
-              Accredited Quality
+              Product Standards
             </h3>
             <h4 className="text-sm font-bold text-slate-400 uppercase tracking-widest">
               Lic No-21525082003619
