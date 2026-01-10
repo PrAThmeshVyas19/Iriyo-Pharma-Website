@@ -134,7 +134,7 @@ export default function About() {
   useEffect(() => {
     const interval = setInterval(() => {
       setActiveValue((prev) => (prev + 1) % values.length);
-    }, 1000); // 3 sec
+    }, 2000); // 2 sec
 
     return () => clearInterval(interval);
   }, [values.length]);

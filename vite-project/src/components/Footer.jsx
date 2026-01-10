@@ -87,9 +87,9 @@ export default function Footer() {
             </p>
             <div className="flex gap-3">
               <SocialLink href="#" icon={Linkedin} />
-              <SocialLink href="#" icon={Twitter} />
+              <SocialLink href="https://www.x.com/Pharma_Iriyo" icon={Twitter} />
               <SocialLink href="#" icon={Facebook} />
-              <SocialLink href="#" icon={Instagram} />
+              <SocialLink href="https://www.instagram.com/iriyo_pharma/" icon={Instagram} />
             </div>
           </div>
         </div>
