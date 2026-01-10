@@ -1,8 +1,19 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { Briefcase, MapPin, Clock, Search, ArrowRight } from "lucide-react";
-import { Link } from "react-router-dom"; // Don't forget this import!
+import {
+  Briefcase,
+  MapPin,
+  Clock,
+  Search,
+  ArrowRight,
+  Heart,
+  Zap,
+  Shield,
+  Users,
+} from "lucide-react";
+import { Link } from "react-router-dom";
 import { usePayload } from "../hooks/usePayload";
+// import lifeAtIriyoVideo from "../assets/videos/life-at-iriyo.mp4"; // UNCOMMENT THIS when you have your video
 
 // --- Background Component ---
 const BackgroundLayer = () => (
@@ -38,7 +49,6 @@ const BackgroundLayer = () => (
   </div>
 );
 
-// 👇 THIS LINE BELOW IS CRITICAL
 export default function Careers() {
   // Fetch 'careers' collection where 'isOpen' is true
   const { data: jobs, loading } = usePayload("careers", {
@@ -61,9 +71,79 @@ export default function Careers() {
     <div className="relative min-h-screen w-full bg-slate-50 font-sans text-slate-900 selection:bg-teal-100">
       <BackgroundLayer />
 
-      <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
-        {/* Header Section */}
-        <div className="text-center mb-16">
+      {/* --- LIFE AT IRIYO SECTION (Top) --- */}
+      {/* Adjusted padding: py-24 for internal spacing, mb-12 to reduce gap below */}
+      <section className="relative w-full py-24 overflow-hidden mb-12">
+        {/* VIDEO BACKGROUND */}
+        <div className="absolute inset-0 w-full h-full">
+          {/* REPLACE THE SRC BELOW WITH YOUR ACTUAL VIDEO PATH */}
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="w-full h-full object-cover"
+            // src={lifeAtIriyoVideo}
+            src="https://assets.mixkit.co/videos/preview/mixkit-scientists-working-in-a-laboratory-4545-large.mp4" // Placeholder video
+          />
+          {/* Dark Overlay for text readability */}
+          <div className="absolute inset-0 bg-slate-900 backdrop-blur-[2px]" />
+        </div>
+
+        {/* CONTENT */}
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-white">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <h2 className="text-3xl md:text-5xl font-extrabold mb-8 tracking-tight">
+              Life at <span className="text-teal-400">Iriyo</span>
+            </h2>
+
+            <p className="text-lg md:text-xl text-slate-200 max-w-4xl mx-auto leading-relaxed mb-12">
+              At IRIYO Pharma, we have found strength in our diversity, imbued
+              by our culture of mutual respect, empathy, and adhering to the
+              highest ethical standards. We are proud that our workforce is
+              bound together by our common values of quality, reliability,
+              consistency, trust, and innovation. These values form the core of
+              our culture and steer us towards our vision.
+            </p>
+
+            {/* Core Values Grid */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-5xl mx-auto mt-12">
+              {[
+                { icon: Users, label: "Humility" },
+                { icon: Shield, label: "Integrity" },
+                { icon: Heart, label: "Passion" },
+                { icon: Zap, label: "Innovation" },
+              ].map((val, i) => (
+                <div
+                  key={i}
+                  className="bg-white/10 backdrop-blur-md border border-white/10 p-6 rounded-2xl flex flex-col items-center hover:bg-white/20 transition-colors"
+                >
+                  <val.icon className="w-8 h-8 text-teal-400 mb-3" />
+                  <span className="font-bold text-lg">{val.label}</span>
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-12 text-slate-300 text-sm max-w-2xl mx-auto border-t border-white/10 pt-8">
+              <p>
+                We encourage our employees to personify these ideologies, as
+                they form the cornerstone of everything we create and value as
+                an organisation.
+              </p>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* --- HERO / INTRO SECTION --- */}
+      {/* Adjusted padding: pt-12 (was pt-24) to bring it closer to the video section */}
+      <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-12">
+        <div className="text-center mb-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -88,8 +168,16 @@ export default function Careers() {
             deliver life-changing medicines.
           </p>
         </div>
+      </div>
 
-        {/* Job Listings */}
+      {/* --- JOB LISTINGS SECTION --- */}
+      <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-24">
+        <div className="mb-8">
+          <h2 className="text-2xl font-bold text-slate-900 mb-6 border-l-4 border-teal-500 pl-4">
+            Open Positions
+          </h2>
+        </div>
+
         <div className="space-y-6">
           {jobs?.map((job, idx) => (
             <motion.div
@@ -99,7 +187,6 @@ export default function Careers() {
               viewport={{ once: true }}
               transition={{ delay: idx * 0.1 }}
             >
-              {/* CLICKABLE CARD LINK */}
               <Link to={`/careers/${job.id}`} className="block h-full group">
                 <div className="bg-white rounded-2xl p-6 md:p-8 border border-slate-200 shadow-sm hover:shadow-lg hover:border-teal-200 transition-all duration-300 relative overflow-hidden h-full">
                   <div className="absolute top-0 left-0 w-1 h-full bg-teal-500 transform scale-y-0 group-hover:scale-y-100 transition-transform duration-300 origin-top" />

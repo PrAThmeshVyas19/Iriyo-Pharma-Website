@@ -8,7 +8,7 @@ const navItems = [
   { id: "home", label: "Home", path: "/" },
   { id: "about", label: "About Us", path: "/about" },
   { id: "products", label: "Products", path: "/products" },
-  { id: "news", label: "News", path: "/news" },
+  { id: "news", label: "Iriyo Connect", path: "/news" },
   { id: "careers", label: "Careers", path: "/careers" }, // <--- Added this
 ];
 
