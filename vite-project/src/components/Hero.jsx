@@ -57,13 +57,13 @@ export default function Hero() {
           loop
           playsInline
           // CHANGED: Fixed blur, opacity, and scale so it is always visible and slightly blurred
-          className="w-full h-full object-cover scale-105 blur-[1px] opacity-60"
+          className="w-full h-full object-cover scale-105"
         >
           <source src={iriyoVideo} type="video/mp4" />
         </video>
 
         {/* Gradient Overlay - Always visible to ensure text contrast */}
-        <div className="absolute inset-0 bg-gradient-to-b from-slate-900/40 via-slate-900/20 to-slate-900/90" />
+        {/* <div className="absolute inset-0 bg-gradient-to-b from-slate-900/40 via-slate-900/20 to-slate-900/90" /> */}
 
         {/* REMOVED: Backdrop Tint div was here */}
       </div>
