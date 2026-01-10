@@ -151,9 +151,6 @@ export default function Products() {
             <h3 className="text-sm font-bold text-slate-400 uppercase tracking-widest">
               Product Standards
             </h3>
-            <h4 className="text-sm font-bold text-slate-400 uppercase tracking-widest">
-              Lic No-21525082003619
-            </h4>
           </div>
 
           <div className="flex flex-wrap justify-center items-center gap-12 md:gap-24  transition-all duration-500">
@@ -182,6 +179,9 @@ export default function Products() {
                 alt="FSSAI Certified"
                 className="h-20 md:h-28 w-auto object-contain"
               />
+              <h4 className="text-sm font-bold text-slate-400 uppercase tracking-widest">
+                FSSAI Lic No-21525082003619
+              </h4>
             </div>
           </div>
         </motion.div>

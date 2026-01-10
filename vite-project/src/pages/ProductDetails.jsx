@@ -160,7 +160,7 @@ export default function ProductDetails() {
               </p>
             </div>
 
-            <div className="flex flex-col sm:flex-row gap-4 pt-8 border-t border-slate-200">
+            {/* <div className="flex flex-col sm:flex-row gap-4 pt-8 border-t border-slate-200">
               <Link
                 to="/contact"
                 className="flex-1 bg-blue-600 text-white text-center px-8 py-3.5 rounded-xl font-bold hover:bg-blue-700 transition-all shadow-lg hover:shadow-blue-500/30"
@@ -171,7 +171,7 @@ export default function ProductDetails() {
                 <Share2 size={18} />
                 Share
               </button>
-            </div>
+            </div> */}
           </motion.div>
         </div>
       </div>
