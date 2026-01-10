@@ -10,6 +10,7 @@ const SplashScreen = ({ onVideoEnd }) => {
   useEffect(() => {
     const playVideo = async () => {
       if (videoRef.current) {
+        videoRef.current.playbackRate = 2.0;
         videoRef.current.muted = true;
         videoRef.current.defaultMuted = true;
         videoRef.current.playsInline = true;
@@ -29,6 +30,7 @@ const SplashScreen = ({ onVideoEnd }) => {
 
   const handleManualPlay = () => {
     if (videoRef.current) {
+      videoRef.current.playbackRate = 2.0;
       videoRef.current.play();
       setShowPlayButton(false);
     }
@@ -51,12 +53,12 @@ const SplashScreen = ({ onVideoEnd }) => {
 
   return (
     <div
-      className={`fixed inset-0 z-[9999] flex flex-col items-center justify-center w-screen h-screen transition-opacity duration-700 ease-in-out ${
+      // CHANGED: Removed inline backgroundColor="#ffffff"
+      // Added bg-gradient-to-br from-blue-50 to-slate-100
+      // This adds a soft medical blue/grey tint behind the video
+      className={`fixed inset-0 z-[9999] flex flex-col items-center justify-center w-screen h-screen transition-opacity duration-700 ease-in-out bg-gradient-to-br from-blue-50 to-slate-100 ${
         isFading ? "opacity-0" : "opacity-100"
       }`}
-      style={{
-        backgroundColor: "#ffffff",
-      }}
     >
       <div className="relative w-full h-full flex items-center justify-center overflow-hidden">
         <video
@@ -67,11 +69,10 @@ const SplashScreen = ({ onVideoEnd }) => {
           preload="auto"
           onTimeUpdate={handleTimeUpdate}
           onEnded={startFadeOut}
-          // --- FIX APPLIED HERE ---
-          // contrast-125: Increases contrast to make the text sharper
-          // brightness-105: "Bleaches" the light grey background to pure white
-          // mix-blend-multiply: Ensures the now-white video background blends perfectly
-          className="w-[95%] h-auto md:w-full md:h-full md:object-cover md:absolute md:inset-0 mix-blend-multiply contrast-125 brightness-105"
+          // contrast-125 & brightness-105: Make the capsule pop
+          // mix-blend-multiply: Blends the video white BG into the new Blue/Slate gradient
+          // drop-shadow-xl: Adds shadow to separate capsule from the colored background
+          className="w-[95%] h-auto md:w-full md:h-full md:object-cover md:absolute md:inset-0 mix-blend-multiply contrast-125 brightness-105 drop-shadow-xl"
         />
       </div>
 
@@ -96,7 +97,7 @@ const SplashScreen = ({ onVideoEnd }) => {
           </div>
 
           <div className="w-full flex justify-between items-center mt-5">
-            <span className="text-[#999999] text-[9px] uppercase tracking-[0.6em] font-bold">
+            <span className="text-[#5c6b7f] text-[9px] uppercase tracking-[0.6em] font-bold">
               Loading
             </span>
             <span className="text-[#1a1a1a] text-[11px] font-bold font-mono">
