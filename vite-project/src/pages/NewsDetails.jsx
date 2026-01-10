@@ -10,13 +10,12 @@ import {
   Twitter,
   Facebook,
   Copy,
-  ChevronRight,
   Share2,
 } from "lucide-react";
 import { getPayloadImage } from "../lib/payload";
 import RichText from "../components/RichText";
 
-// --- Background Component (Matches Products/Careers Theme) ---
+// --- Background Component ---
 const BackgroundLayer = () => (
   <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden">
     <svg
@@ -48,7 +47,6 @@ const BackgroundLayer = () => (
 
 export default function NewsDetails() {
   const { id } = useParams();
-  const navigate = useNavigate();
   const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -69,17 +67,6 @@ export default function NewsDetails() {
     };
     if (id) getData();
   }, [id]);
-
-  const goToAboutSection = (e) => {
-    e.preventDefault();
-    navigate("/");
-    setTimeout(() => {
-      const aboutSection = document.getElementById("about");
-      if (aboutSection) {
-        aboutSection.scrollIntoView({ behavior: "smooth" });
-      }
-    }, 100);
-  };
 
   if (loading)
     return (
@@ -115,12 +102,12 @@ export default function NewsDetails() {
     );
 
   return (
-    <article className="relative min-h-screen bg-slate-50 font-sans text-slate-900 pb-20 selection:bg-blue-100">
+    <article className="relative min-h-screen bg-slate-50 font-sans text-slate-900 pb-24 selection:bg-blue-100">
       <BackgroundLayer />
 
       {/* 1. TOP NAVIGATION BAR */}
       <div className="sticky top-0 z-40 bg-slate-50/80 backdrop-blur-md border-b border-slate-200/60">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           <Link
             to="/news"
             className="group flex items-center text-sm font-semibold text-slate-600 hover:text-blue-600 transition-colors"
@@ -130,168 +117,123 @@ export default function NewsDetails() {
             </div>
             Back to News
           </Link>
-
-          {/* Mobile Only Share Icon */}
           <div className="md:hidden text-slate-400">
             <Share2 size={20} />
           </div>
         </div>
       </div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 md:pt-12">
-        <div className="grid lg:grid-cols-12 gap-8 lg:gap-12">
-          {/* 2. MAIN CONTENT COLUMN */}
-          <div className="lg:col-span-8">
-            {/* ARTICLE HEADER */}
-            <motion.header
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="mb-8 md:mb-10"
-            >
-              <div className="flex flex-wrap items-center gap-3 mb-6">
-                <span className="px-3 py-1 bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-md shadow-blue-200 text-xs font-bold uppercase tracking-wider rounded-full">
-                  {post.category?.title || "Update"}
-                </span>
-                <span className="text-slate-500 text-sm flex items-center gap-1.5 font-medium bg-white/50 px-2 py-1 rounded-md border border-slate-200/50">
-                  <Clock size={14} className="text-blue-500" /> 5 min read
-                </span>
+      {/* 2. CENTERED CONTENT CONTAINER */}
+      <div className="relative z-10 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 md:pt-16">
+        {/* ARTICLE HEADER */}
+        <motion.header
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-center mb-12"
+        >
+          <div className="flex flex-wrap justify-center items-center gap-3 mb-8">
+            <span className="px-3 py-1 bg-gradient-to-r from-blue-600 to-blue-500 text-white shadow-md shadow-blue-200 text-xs font-bold uppercase tracking-wider rounded-full">
+              {post.category?.title || "Update"}
+            </span>
+            <span className="text-slate-500 text-sm flex items-center gap-1.5 font-medium bg-white/60 px-2 py-1 rounded-md border border-slate-200">
+              <Clock size={14} className="text-blue-500" /> 5 min read
+            </span>
+          </div>
+
+          <h1 className="text-3xl md:text-5xl font-extrabold text-slate-900 leading-tight mb-8 tracking-tight">
+            {post.title}
+          </h1>
+
+          {/* Author & Date - Centered */}
+          <div className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-8 pt-6 border-t border-slate-200/60 w-full max-w-xl mx-auto">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-full bg-white border border-slate-200 flex items-center justify-center text-blue-600 overflow-hidden shadow-sm">
+                {post.author?.image ? (
+                  <img
+                    src={getPayloadImage(post.author.image)}
+                    alt="Author"
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <User size={20} />
+                )}
               </div>
-
-              <h1 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-slate-900 leading-[1.15] mb-6 tracking-tight">
-                {post.title}
-              </h1>
-
-              {/* Author Row */}
-              <div className="flex items-center gap-4 pt-6 border-t border-slate-200/60">
-                <div className="w-12 h-12 rounded-full bg-white border border-slate-100 flex items-center justify-center text-blue-600 font-bold shadow-sm">
-                  {post.author?.image ? (
-                    <img
-                      src={getPayloadImage(post.author.image)}
-                      alt="Author"
-                      className="w-full h-full rounded-full object-cover"
-                    />
-                  ) : (
-                    <User size={20} />
-                  )}
-                </div>
-                <div>
-                  <p className="text-sm font-bold text-slate-900">
-                    {post.author?.name || "Editorial Team"}
-                  </p>
-                  <p className="text-xs text-slate-500 flex items-center gap-2 font-medium">
-                    <Calendar size={12} className="text-teal-500" />
-                    {new Date(post.createdAt).toLocaleDateString(undefined, {
-                      year: "numeric",
-                      month: "long",
-                      day: "numeric",
-                    })}
-                  </p>
-                </div>
+              <div className="text-left">
+                <p className="text-sm font-bold text-slate-900">
+                  {post.author?.name || "Editorial Team"}
+                </p>
+                <p className="text-xs text-slate-500">Author</p>
               </div>
-            </motion.header>
+            </div>
 
-            {/* FEATURED IMAGE */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.98 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.1 }}
-              className="mb-12 rounded-2xl overflow-hidden shadow-2xl shadow-slate-200/50 ring-1 ring-slate-900/5 bg-white"
-            >
-              {post.image ? (
-                <img
-                  src={getPayloadImage(post.image)}
-                  alt={post.title}
-                  className="w-full h-auto object-cover aspect-video"
-                />
-              ) : (
-                <div className="w-full aspect-video flex items-center justify-center text-slate-400 bg-slate-100">
-                  No Image Available
-                </div>
-              )}
-            </motion.div>
+            <div className="hidden md:block w-px h-8 bg-slate-200" />
 
-            {/* RICH TEXT CONTENT */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.2 }}
-              className="prose prose-lg prose-slate prose-headings:font-bold prose-headings:text-slate-900 prose-p:text-slate-600 prose-p:leading-relaxed prose-a:text-blue-600 hover:prose-a:text-blue-700 prose-img:rounded-2xl prose-img:shadow-lg max-w-none bg-white p-8 md:p-12 rounded-3xl border border-slate-100 shadow-sm"
-            >
-              <RichText content={post.content} />
-            </motion.div>
-
-            {/* SHARE FOOTER */}
-            <div className="mt-12">
-              <h4 className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">
-                Share this article
-              </h4>
-              <div className="flex gap-3">
-                <button className="p-3 bg-white border border-slate-200 rounded-full hover:bg-[#0077b5] hover:border-[#0077b5] hover:text-white text-slate-600 transition-all duration-300 shadow-sm hover:shadow-md">
-                  <Linkedin size={20} />
-                </button>
-                <button className="p-3 bg-white border border-slate-200 rounded-full hover:bg-[#1DA1F2] hover:border-[#1DA1F2] hover:text-white text-slate-600 transition-all duration-300 shadow-sm hover:shadow-md">
-                  <Twitter size={20} />
-                </button>
-                <button className="p-3 bg-white border border-slate-200 rounded-full hover:bg-[#4267B2] hover:border-[#4267B2] hover:text-white text-slate-600 transition-all duration-300 shadow-sm hover:shadow-md">
-                  <Facebook size={20} />
-                </button>
-                <button className="p-3 bg-white border border-slate-200 rounded-full hover:bg-slate-800 hover:border-slate-800 hover:text-white text-slate-600 transition-all duration-300 shadow-sm hover:shadow-md">
-                  <Copy size={20} />
-                </button>
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-full bg-white border border-slate-200 flex items-center justify-center text-teal-600 shadow-sm">
+                <Calendar size={18} />
+              </div>
+              <div className="text-left">
+                <p className="text-sm font-bold text-slate-900">
+                  {new Date(post.createdAt).toLocaleDateString(undefined, {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  })}
+                </p>
+                <p className="text-xs text-slate-500">Published</p>
               </div>
             </div>
           </div>
+        </motion.header>
 
-          {/* 3. SIDEBAR */}
-          <div className="lg:col-span-4 mt-12 lg:mt-0">
-            <div className="sticky top-24 space-y-6">
-              {/* About Card */}
-              <div className="bg-white p-6 md:p-8 rounded-2xl border border-slate-200 shadow-lg shadow-slate-200/40 relative overflow-hidden group">
-                <div className="absolute top-0 right-0 w-32 h-32 bg-blue-50 rounded-bl-[100px] -mr-8 -mt-8 transition-transform group-hover:scale-110" />
-
-                <div className="relative z-10">
-                  <div className="w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-200 mb-6 text-white">
-                    <span className="font-bold text-xl">I</span>
-                  </div>
-                  <h3 className="font-bold text-xl text-slate-900 mb-3">
-                    About Iriyo Pharma
-                  </h3>
-                  <p className="text-slate-600 leading-relaxed mb-6">
-                    Pioneering the future of global healthcare through
-                    integrity, innovation, and scientific excellence.
-                  </p>
-                  <button
-                    onClick={goToAboutSection}
-                    className="w-full py-3 bg-slate-50 border border-slate-200 text-slate-900 font-semibold rounded-xl hover:bg-blue-600 hover:text-white hover:border-blue-600 hover:shadow-md transition-all flex items-center justify-center gap-2 group/btn"
-                  >
-                    Learn More{" "}
-                    <ChevronRight
-                      size={16}
-                      className="group-hover/btn:translate-x-1 transition-transform"
-                    />
-                  </button>
-                </div>
-              </div>
-
-              {/* Contact Card */}
-              <div className="p-8 rounded-2xl bg-gradient-to-br from-slate-900 to-slate-800 text-white shadow-xl shadow-slate-400/20 relative overflow-hidden">
-                <div className="relative z-10">
-                  <h3 className="font-bold text-xl mb-2">Have a question?</h3>
-                  <p className="text-slate-300 text-sm mb-6 leading-relaxed">
-                    Our team is here to help you with any inquiries regarding
-                    our products or research.
-                  </p>
-                  <Link
-                    to="/contact"
-                    className="inline-block text-sm font-bold bg-white text-slate-900 px-6 py-3 rounded-xl hover:bg-blue-50 transition-colors"
-                  >
-                    Contact Us
-                  </Link>
-                </div>
-                {/* Decorative blob */}
-                <div className="absolute -bottom-12 -right-12 w-40 h-40 bg-white/10 rounded-full blur-2xl" />
-              </div>
+        {/* FEATURED IMAGE */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.98 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.1 }}
+          className="mb-16 -mx-4 md:-mx-0 rounded-none md:rounded-3xl overflow-hidden shadow-2xl shadow-slate-200/50 ring-1 ring-slate-900/5 bg-white"
+        >
+          {post.image ? (
+            <img
+              src={getPayloadImage(post.image)}
+              alt={post.title}
+              className="w-full h-auto object-cover aspect-video"
+            />
+          ) : (
+            <div className="w-full aspect-video flex items-center justify-center text-slate-400 bg-slate-100">
+              No Image Available
             </div>
+          )}
+        </motion.div>
+
+        {/* CONTENT BODY */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.2 }}
+          className="prose prose-lg prose-slate prose-headings:font-bold prose-headings:text-slate-900 prose-p:text-slate-600 prose-p:leading-relaxed prose-a:text-blue-600 hover:prose-a:text-blue-700 prose-img:rounded-2xl prose-img:shadow-lg max-w-none bg-white p-6 md:p-10 rounded-2xl border border-slate-100 shadow-sm"
+        >
+          <RichText content={post.content} />
+        </motion.div>
+
+        {/* FOOTER / SHARE */}
+        <div className="mt-16 pt-10 border-t border-slate-200 flex flex-col items-center text-center">
+          <h4 className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-6">
+            Share this article
+          </h4>
+          <div className="flex gap-4">
+            <button className="p-3 bg-white border border-slate-200 rounded-full hover:bg-[#0077b5] hover:border-[#0077b5] hover:text-white text-slate-500 transition-all duration-300 shadow-sm hover:shadow-md transform hover:-translate-y-1">
+              <Linkedin size={20} />
+            </button>
+            <button className="p-3 bg-white border border-slate-200 rounded-full hover:bg-[#1DA1F2] hover:border-[#1DA1F2] hover:text-white text-slate-500 transition-all duration-300 shadow-sm hover:shadow-md transform hover:-translate-y-1">
+              <Twitter size={20} />
+            </button>
+            <button className="p-3 bg-white border border-slate-200 rounded-full hover:bg-[#4267B2] hover:border-[#4267B2] hover:text-white text-slate-500 transition-all duration-300 shadow-sm hover:shadow-md transform hover:-translate-y-1">
+              <Facebook size={20} />
+            </button>
+            <button className="p-3 bg-white border border-slate-200 rounded-full hover:bg-slate-800 hover:border-slate-800 hover:text-white text-slate-500 transition-all duration-300 shadow-sm hover:shadow-md transform hover:-translate-y-1">
+              <Copy size={20} />
+            </button>
           </div>
         </div>
       </div>
