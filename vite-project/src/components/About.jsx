@@ -26,7 +26,7 @@ import {
 
 import IriyoLogo from "../assets/logo/IriyoLogo.png";
 // Make sure to add your about video here
-import aboutVideo from "../assets/About-Video/video.mp4";
+import aboutVideo from "../assets/About-Video/video3.mp4";
 
 // for location maps
 import FreePremiumMap from "../components/FreePremiumMap";
@@ -130,13 +130,13 @@ export default function About() {
       {/* 1. HERO SECTION: Video & Text Separated */}
       <div className="w-full flex flex-col">
         {/* A. The Video (Clean, No Blur, No Overlay) */}
-        <div className="w-full h-[50vh] md:h-[75vh] overflow-hidden">
+        <div className="relative w-full h-[50vh] md:h-[75vh] overflow-hidden">
           <video
             autoPlay
             loop
             muted
             playsInline
-            className="w-full h-full object-cover"
+            className="absolute inset-0 w-full h-full object-cover"
           >
             <source src={aboutVideo} type="video/mp4" />
           </video>
