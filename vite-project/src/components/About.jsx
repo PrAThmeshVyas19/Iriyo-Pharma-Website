@@ -6,13 +6,6 @@ import {
   useSpring,
   useTransform,
 } from "framer-motion";
-// import {
-//   ComposableMap,
-//   Geographies,
-//   Geography,
-//   Marker,
-//   Annotation,
-// } from "react-simple-maps";
 import {
   Award,
   Users,
@@ -31,11 +24,12 @@ import {
   ChevronRight,
 } from "lucide-react";
 
-import IriyoLogo from "../assets/logo/logo.png";
+import IriyoLogo from "../assets/logo/IriyoLogo.png";
+// Make sure to add your about video here
+import aboutVideo from "../assets/About-Video/video.mp4";
 
 // for location maps
 import FreePremiumMap from "../components/FreePremiumMap";
-
 
 // --- Utility: Animated Counter ---
 function Counter({ value, suffix = "" }) {
@@ -73,90 +67,7 @@ const Section = ({ children, className = "" }) => {
   );
 };
 
-// --- Updated Component: Maharashtra Focused Map ---
-const geoUrl = "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json";
-
-// Updated Markers based on your image (Maharashtra, India)
-const markers = [
-  { name: "Pune", coordinates: [73.8567, 18.5204] },
-  { name: "Nagpur", coordinates: [79.0882, 21.1458] },
-  { name: "Bhandara", coordinates: [79.657, 21.1777] },
-  { name: "Gondia", coordinates: [80.221, 21.4624] },
-  { name: "Chandrapur", coordinates: [79.2961, 19.9615] },
-];
-
-const WorldMap = () => {
-  return (
-    <div className="w-full h-full absolute inset-0 rounded-[2.5rem] overflow-hidden bg-slate-900">
-      <ComposableMap
-        projection="geoMercator"
-        projectionConfig={{
-          scale: 3500, // High zoom to focus on Maharashtra
-          center: [78, 20], // Center coordinates for Maharashtra
-        }}
-        style={{ width: "100%", height: "100%" }}
-      >
-        <Geographies geography={geoUrl}>
-          {({ geographies }) =>
-            geographies.map((geo) => {
-              // Highlight India slightly differently
-              const isIndia = geo.properties.name === "India";
-              return (
-                <Geography
-                  key={geo.rsmKey}
-                  geography={geo}
-                  fill={isIndia ? "#1e293b" : "#0f172a"} // Highlight India vs World
-                  stroke="#334155"
-                  strokeWidth={0.5}
-                  style={{
-                    default: { outline: "none" },
-                    hover: { fill: "#1e293b", outline: "none" },
-                    pressed: { outline: "none" },
-                  }}
-                />
-              );
-            })
-          }
-        </Geographies>
-
-        {/* Render Markers with Names */}
-        {markers.map(({ name, coordinates }) => (
-          <Marker key={name} coordinates={coordinates}>
-            <g
-              fill="none"
-              stroke="#3b82f6"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              transform="translate(-12, -24)"
-            >
-              <circle cx="12" cy="10" r="3" fill="#3b82f6" />
-              <path d="M12 21.7C17.3 17 20 13 20 10a8 8 0 1 0-16 0c0 3 2.7 7 8 11.7z" />
-            </g>
-            <text
-              textAnchor="middle"
-              y={15} // Position text below the pin
-              style={{
-                fontFamily: "system-ui",
-                fill: "white",
-                fontSize: "10px", // Increased font size for readability
-                fontWeight: "bold",
-                textShadow: "0px 2px 4px rgba(0,0,0,0.8)", // Shadow for readability
-              }}
-            >
-              {name}
-            </text>
-          </Marker>
-        ))}
-      </ComposableMap>
-
-      {/* Map Overlay Gradient */}
-      <div className="absolute inset-0 pointer-events-none bg-gradient-to-t from-slate-900 via-transparent to-transparent opacity-60" />
-    </div>
-  );
-};
-
-// --- Background Component ---
+// --- Background Component (Kept for the rest of the page) ---
 const BackgroundLayer = () => (
   <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden">
     <div className="absolute top-0 left-0 w-96 h-96 bg-blue-300 rounded-full mix-blend-multiply filter blur-[80px] opacity-30 animate-blob" />
@@ -216,41 +127,41 @@ const directors = [
 export default function About() {
   return (
     <div className="relative min-h-screen w-full bg-slate-50 selection:bg-blue-100 font-sans text-slate-900">
+      {/* 1. HERO SECTION: Video & Text Separated */}
+      <div className="w-full flex flex-col">
+        {/* A. The Video (Clean, No Blur, No Overlay) */}
+        <div className="w-full h-[50vh] md:h-[75vh] overflow-hidden">
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="w-full h-full object-cover"
+          >
+            <source src={aboutVideo} type="video/mp4" />
+          </video>
+        </div>
+
+        {/* B. The Text (Located below the video) */}
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-16 md:py-20">
+          <Section className="text-center max-w-4xl mx-auto">
+            <h3 className="text-3xl font-bold mb-4 tracking-tight">About Us</h3>
+            {/* Note: I changed the text color to slate-700 because it is now on a white background */}
+            <p className="mt-4 text-lg text-slate-600">
+              IRIYO Pharma is a pharmaceutical company founded by experienced
+              professionals with extensive exposure to the healthcare and
+              pharmaceutical sectors across Maharashtra. Built on a strong
+              foundation of domain knowledge, practical experience, and ethical
+              values.
+            </p>
+          </Section>
+        </div>
+      </div>
+
+      {/* Background layer for the rest of the page */}
       <BackgroundLayer />
 
       <div className="relative z-10">
-        {/* 1. HERO */}
-        <section className="relative py-12 lg:py-14">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <Section className="text-center max-w-4xl mx-auto mb-16">
-              <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.5 }}
-                className="inline-flex items-center rounded-full border border-blue-200 bg-white/50 backdrop-blur-md px-3 py-1 text-sm font-medium text-blue-800 mb-6 shadow-sm"
-              >
-                <span className="flex h-2 w-2 rounded-full bg-blue-600 mr-2 animate-pulse"></span>
-                Your Partner in Quality Healthcare
-              </motion.div>
-
-              <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight text-slate-900 mb-6 drop-shadow-sm">
-                I love Iriyo <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r bg-pink-600">
-                  ❤️
-                </span>
-              </h1>
-              <p className="text-lg md:text-xl text-slate-600 leading-relaxed max-w-2xl mx-auto">
-                IRIYO Pharma is a pharmaceutical company founded by experienced
-                professionals with extensive exposure to the healthcare and
-                pharmaceutical sectors across Maharashtra. Built on a strong
-                foundation of domain knowledge, practical experience, and
-                ethical values, the company is committed to contributing
-                meaningfully to the evolving healthcare landscape in India.
-              </p>
-            </Section>
-          </div>
-        </section>
-
         {/* 2. MISSION & VISION */}
         <section className="py-14">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -404,15 +315,12 @@ export default function About() {
           </div>
         </section>
 
-        {/* 5. BRAND IDENTITY & PRESENCE (Redesigned & Updated Map) */}
+        {/* 5. BRAND IDENTITY & PRESENCE */}
         <section className="py-20 relative overflow-hidden">
           <div className="absolute top-1/2 left-0 w-full h-full bg-slate-100 -skew-y-3 -z-10 origin-left scale-110" />
 
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-
-            {/* <div className="grid lg:grid-cols-2 gap-16 items-start"> // prevous chanegs map cha same size yavi sathi */}
             <div className="grid lg:grid-cols-2 gap-16 items-stretch">
-
               {/* LEFT: REDESIGNED LOGO STORY */}
               <Section className="h-full">
                 <div className="relative bg-white/80 backdrop-blur-sm p-8 rounded-[2rem] border border-white shadow-xl h-full flex flex-col">
@@ -460,51 +368,12 @@ export default function About() {
                 </div>
               </Section>
 
-              {/* RIGHT: UPDATED PRESENCE MAP (Maharashtra Focused) */}
-              {/* <Section>
-                <div className="relative bg-slate-900 rounded-[2.5rem] p-1 text-white overflow-hidden shadow-2xl h-[600px] border border-slate-700">
-                  <div className="absolute top-6 left-6 z-10 bg-slate-800/90 backdrop-blur-md px-4 py-2 rounded-full border border-slate-700 flex items-center gap-2 shadow-lg">
-                    <span className="relative flex h-3 w-3">
-                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                      <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
-                    </span>
-                    <span className="text-sm font-semibold tracking-wide">
-                      Live Operations
-                    </span>
-                  </div> */}
-
-              {/* --- REAL MAP COMPONENT --- */}
-              {/* <WorldMap /> */}
-
-              {/* Overlay Info Card */}
-              {/* <div className="absolute bottom-6 left-6 right-6 bg-slate-800/80 backdrop-blur-md p-6 rounded-2xl border border-slate-700">
-                    <div className="flex items-start justify-between">
-                      <div>
-                        <h4 className="text-lg font-bold text-white mb-1">
-                          Regional Stronghold
-                        </h4>
-                        <p className="text-slate-400 text-sm">
-                          Primary distribution hubs across Maharashtra.
-                        </p>
-                      </div>
-                      <div className="text-right">
-                        <span className="block text-2xl font-bold text-blue-400">
-                          5+
-                        </span>
-                        <span className="text-xs text-slate-500 uppercase tracking-wider">
-                          Key Cities
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </Section> */}
+              {/* RIGHT: MAP COMPONENT */}
               <Section className="h-full">
                 <div className="h-full min-h-[560px]">
                   <FreePremiumMap className="h-full" />
                 </div>
               </Section>
-
             </div>
           </div>
         </section>
