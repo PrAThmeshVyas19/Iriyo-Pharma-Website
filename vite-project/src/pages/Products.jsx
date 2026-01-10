@@ -1,7 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { ArrowRight, Package, CheckCircle } from "lucide-react"; // Added CheckCircle for badges if needed
+import { ArrowRight, Package } from "lucide-react";
 import { usePayload } from "../hooks/usePayload";
 import { getPayloadImage } from "../lib/payload";
 import fssaiLogo from "../assets/Standard-Logo/fssai.png";
@@ -71,90 +71,24 @@ export default function Products() {
             animate={{ opacity: 1, y: 0 }}
             className="text-4xl md:text-5xl font-extrabold text-slate-900 mb-6"
           >
-            Pharmaceutical <span className="text-blue-600">Solutions</span>
+            Iriyo's <span className="text-blue-600">Products</span>
           </motion.h1>
 
-          {/* New Description Text */}
+          {/* Description Text */}
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="text-lg text-slate-600 max-w-3xl mx-auto leading-relaxed mb-8"
+            className="text-lg text-slate-600 max-w-3xl mx-auto leading-relaxed"
           >
             We offer a broad and diversified range of medicines designed to
             serve varied healthcare requirements. Our portfolio spans branded
             formulations, specialty products and over-the-counter solutions.
           </motion.p>
-
-          {/* Certification Marks Section */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.2 }}
-            className="flex flex-wrap justify-center items-center gap-6"
-          >
-            {/* WHO GMP Badge */}
-            <div className="flex items-center gap-2 px-4 py-2 bg-white rounded-full border border-slate-200 shadow-sm">
-              {/* Replace src with actual logo path */}
-              <img
-                src={whoLogo}
-                alt="WHO GMP Certified"
-                className="h-8 w-auto object-contain"
-                onError={(e) => {
-                  e.target.style.display = "none";
-                  e.target.nextSibling.style.display = "block";
-                }} // Fallback if image missing
-              />
-              <span className="text-sm font-bold text-slate-700 hidden">
-                WHO GMP Certified
-              </span>
-
-              {/* Text Fallback (visible if image fails or while you wait for assets) */}
-              <div className="flex items-center gap-2">
-                <img
-                  src={gmpLogo}
-                  alt="WHO GMP Certified"
-                  className="h-8 w-auto object-contain"
-                  onError={(e) => {
-                    e.target.style.display = "none";
-                    e.target.nextSibling.style.display = "block";
-                  }} // Fallback if image missing
-                />
-                <span className="font-semibold text-slate-700">
-                  WHO GMP Certified
-                </span>
-              </div>
-            </div>
-
-            {/* FSSAI Badge */}
-            <div className="flex items-center gap-2 px-4 py-2 bg-white rounded-full border border-slate-200 shadow-sm">
-              {/* Replace src with actual logo path */}
-              <img
-                src={fssaiLogo}
-                alt="FSSAI Certified"
-                className="h-8 w-auto object-contain"
-                onError={(e) => {
-                  e.target.style.display = "none";
-                  e.target.nextSibling.style.display = "block";
-                }}
-              />
-              <span className="text-sm font-bold text-slate-700 hidden">
-                FSSAI Approved
-              </span>
-
-              {/* Text Fallback */}
-              <div className="flex items-center gap-2">
-                {/* <CheckCircle className="w-5 h-5 text-blue-600" /> */}
-                <span className="font-semibold text-slate-700">
-                  FSSAI Approved
-                </span>
-              </div>
-            </div>
-          </motion.div>
         </div>
 
         {/* Product Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-24">
           {products?.map((product, idx) => (
             <motion.div
               key={product.id}
@@ -205,6 +139,52 @@ export default function Products() {
             </motion.div>
           ))}
         </div>
+
+        {/* --- Certifications / Footer Section --- */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          className="border-t border-slate-200 pt-16 pb-8"
+        >
+          <div className="text-center mb-10">
+            <h3 className="text-sm font-bold text-slate-400 uppercase tracking-widest">
+              Accredited Quality
+            </h3>
+            <h4 className="text-sm font-bold text-slate-400 uppercase tracking-widest">
+              Lic No-21525082003619
+            </h4>
+          </div>
+
+          <div className="flex flex-wrap justify-center items-center gap-12 md:gap-24  transition-all duration-500">
+            {/* WHO Logo */}
+            <div className="flex flex-col items-center gap-2">
+              <img
+                src={whoLogo}
+                alt="WHO Certified"
+                className="h-20 md:h-28 w-auto object-contain"
+              />
+            </div>
+
+            {/* GMP Logo */}
+            <div className="flex flex-col items-center gap-2">
+              <img
+                src={gmpLogo}
+                alt="GMP Certified"
+                className="h-20 md:h-28 w-auto object-contain"
+              />
+            </div>
+
+            {/* FSSAI Logo */}
+            <div className="flex flex-col items-center gap-2">
+              <img
+                src={fssaiLogo}
+                alt="FSSAI Certified"
+                className="h-20 md:h-28 w-auto object-contain"
+              />
+            </div>
+          </div>
+        </motion.div>
       </div>
     </div>
   );

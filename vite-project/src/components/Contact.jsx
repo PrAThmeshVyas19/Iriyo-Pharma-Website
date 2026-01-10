@@ -151,7 +151,7 @@ export default function Contact() {
     {
       icon: Mail,
       title: "Email",
-      details: ["info@iriyopharma.com", "careers@iriyopharma.com"],
+      details: ["ho@iriyopharma.com"],
       color: "text-teal-600",
       bg: "bg-teal-100/50",
     },

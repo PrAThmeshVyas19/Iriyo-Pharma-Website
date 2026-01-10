@@ -75,7 +75,7 @@ export default function Footer() {
             <h3 className="text-white font-bold mb-6 text-lg">Contact Us</h3>
             <ul className="space-y-4">
               <ContactItem icon={MapPin} text="Pune, Maharashtra, India" />
-              <ContactItem icon={Mail} text="info@iriyopharma.com" />
+              <ContactItem icon={Mail} text="ho@iriyopharma.com" />
             </ul>
           </div>
 
