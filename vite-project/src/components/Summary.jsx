@@ -99,15 +99,42 @@ export default function Summary() {
             </p>
 
             <p>
-              With a{" "}
+              With a strong understanding of medical needs regulatory
+              requirements, and market dynamics, IRIYO Pharma delivers
+              high-quality, safe, effective and{" "}
               <strong className="text-slate-800 font-semibold">
-                patient-centric approach
+                affordable pharmaceutical solutions.
               </strong>{" "}
-              at our core, we prioritize meeting medical needs while strictly
-              adhering to regulatory standards. Integrity, compliance, and
-              accountability guide every aspect of our operations as we aim to
-              support healthcare professionals and contribute meaningfully to a
-              healthier ecosystem in India.
+              A patient-centric philosophy guides every product, decision, and
+              process, ensuring improved patient outcomes and enhanced quality
+              of life.
+            </p>
+
+            <p>
+              Ethics, compliance, and transparency form the backbone of IRIYO
+              Pharma’s operations. The company follows strict regulatory
+              standards and{" "}
+              <strong className="text-slate-800 font-semibold">
+                fosters long-term trust with healthcare professionals,
+                distributors, and partners
+              </strong>{" "}
+              through responsible and accountable business practices.
+            </p>
+
+            <p>
+              Driven by collaboration,{" "}
+              <strong className="text-slate-800 font-semibold">
+                continuous learning, and quality assurance,
+              </strong>{" "}
+              IRIYO Pharma strives to support informed medical practice while
+              expanding healthcare access, particularly in emerging and
+              underserved communities.
+            </p>
+
+            <p>
+              Guided by integrity and a commitment to service, the company
+              continues to grow with a clear focus on patient well-being and
+              sustainable healthcare impact.
             </p>
           </div>
         </Section>
