@@ -14,12 +14,13 @@ import CareerDetails from "./pages/CareerDetails";
 import AnalyticsTracker from "./components/AnalyticsTracker";
 import ClientReport from "./pages/ClientReports";
 import SplashScreen from "./components/SpashScreen";
+import Summary from "./components/Summary";
 
 // Wrapper for Home Page
 const Home = () => (
   <>
     <Hero />
-    <About />
+    <Summary />
     <Contact />
   </>
 );
@@ -54,6 +55,7 @@ function App() {
                 <Route path="/report" element={<ClientReport />} />
                 <Route path="/" element={<Home />} />
                 {/* PRODUCT ROUTES */}
+                <Route path="/about" element={<About />} />
                 <Route path="/products" element={<Products />} />
                 <Route path="/products/:id" element={<ProductDetails />} />
                 <Route path="/news" element={<News />} />

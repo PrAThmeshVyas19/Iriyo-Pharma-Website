@@ -6,7 +6,7 @@ import iriyoLogo from "../assets/logo/logo2.png";
 
 const navItems = [
   { id: "home", label: "Home", path: "/" },
-  { id: "about", label: "About Us", path: "/#about" },
+  { id: "about", label: "About Us", path: "/about" },
   { id: "products", label: "Products", path: "/products" },
   { id: "news", label: "News", path: "/news" },
   { id: "careers", label: "Careers", path: "/careers" }, // <--- Added this
@@ -26,6 +26,7 @@ export default function Header() {
     else if (path.startsWith("/news")) setActiveSection("news");
     else if (path.startsWith("/careers"))
       setActiveSection("careers"); // <--- Added check
+    else if (path.startsWith("/about")) setActiveSection("about");
     else if (path === "/") setActiveSection("home");
   }, [location]);
 
