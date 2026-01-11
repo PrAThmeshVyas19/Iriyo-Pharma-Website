@@ -153,27 +153,35 @@ export default function Products() {
             </h3>
           </div>
 
-          <div className="flex flex-wrap justify-center items-center gap-12 md:gap-24  transition-all duration-500">
+          {/* <div className="flex flex-wrap justify-center items-center gap-12 md:gap-24  transition-all duration-500"> */}
+          {/* <div className="flex flex-wrap justify-center items-center gap-4 md:gap-8 transition-all duration-500"> */}
+          {/* <div className="flex justify-center items-start gap-2 md:gap-4 transition-all duration-500"> */}
+          <div className="flex justify-center items-start gap-2 md:gap-3 transition-all duration-500">
+
             {/* WHO Logo */}
-            <div className="flex flex-col items-center gap-2">
+            <div className="flex flex-col items-center w-40">
               <img
                 src={whoLogo}
                 alt="WHO Certified"
-                className="h-20 md:h-28 w-auto object-contain"
+                className="h-20 md:h-24 w-auto object-contain"
               />
+              <h4 className="text-sm font-bold text-slate-400 uppercase tracking-widest">WHO</h4>
             </div>
 
+
             {/* GMP Logo */}
-            <div className="flex flex-col items-center gap-2">
+            <div className="flex flex-col items-center w-40">
               <img
                 src={gmpLogo}
                 alt="GMP Certified"
-                className="h-20 md:h-28 w-auto object-contain"
+                className="h-20 md:h-24 w-auto object-contain"
               />
+              <h4 className="text-sm font-bold text-slate-400 uppercase tracking-widest">GMP</h4>
             </div>
 
+
             {/* FSSAI Logo */}
-            <div className="flex flex-col items-center gap-2">
+            {/* <div className="flex flex-col items-center gap-2">
               <img
                 src={fssaiLogo}
                 alt="FSSAI Certified"
@@ -182,7 +190,19 @@ export default function Products() {
               <h4 className="text-sm font-bold text-slate-400 uppercase tracking-widest">
                 FSSAI Lic No-21525082003619
               </h4>
+            </div> */}
+            <div className="flex flex-col items-center w-40">
+              <img
+                src={fssaiLogo}
+                alt="FSSAI Certified"
+                className="h-20 md:h-24 w-auto object-contain"
+              />
+              <h4 className="text-sm font-bold text-slate-400 uppercase tracking-widest whitespace-nowrap">
+                LIC No-21525082003619
+              </h4>
+
             </div>
+
           </div>
         </motion.div>
       </div>

@@ -51,11 +51,17 @@ export default function News() {
                   {/* Image */}
                   <div className="aspect-video bg-slate-100 relative overflow-hidden">
                     {post.image ? (
-                      <img
-                        src={getPayloadImage(post.image)}
-                        alt={post.title}
-                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                      />
+                      // <img
+                      //   src={getPayloadImage(post.image)}
+                      //   alt={post.title}
+                      //   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                      // />
+                        <img
+                          src={getPayloadImage(post.image)}
+                          alt={post.title}
+                          className="w-full h-full object-contain bg-white transition-transform duration-700 group-hover:scale-105"
+                        />
+
                     ) : (
                       <div className="w-full h-full flex items-center justify-center text-slate-400 bg-slate-200">
                         No Image
