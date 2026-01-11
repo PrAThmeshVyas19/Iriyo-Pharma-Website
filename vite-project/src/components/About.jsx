@@ -1,11 +1,14 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
+
 import {
   motion,
+  AnimatePresence,
   useInView,
   useMotionValue,
   useSpring,
   useTransform,
 } from "framer-motion";
+
 import {
   Award,
   Users,
@@ -30,6 +33,11 @@ import aboutVideo from "../assets/About-Video/video4.mp4";
 
 // for location maps
 import FreePremiumMap from "../components/FreePremiumMap";
+
+// temporary images for the profile
+import femaleImg from "../assets/display/female.jpg";
+import maleImg from "../assets/display/male.jpg";
+
 
 // --- Utility: Animated Counter ---
 function Counter({ value, suffix = "" }) {
@@ -104,27 +112,35 @@ const directors = [
   {
     name: "Mr. Sawan Bahekar",
     role: "Director",
-    image:
-      "https://images.pexels.com/photos/1181686/pexels-photo-1181686.jpeg?auto=compress&cs=tinysrgb&w=400",
+    image: maleImg,
     bio: "Sawan Bahekar holds a Master’s degree in Pharmaceutical Sciences and brings over a decade of professional experience in the pharmaceutical sector. Alongside his expertise in healthcare, he is a passionate wildlife expert and actively leads socio-economic development projects. His work focuses on strengthening community livelihoods and contributing to sustainable development initiatives at the grassroots level. Driven by a compassionate vision, Sawan is willing to deliver accessible and equitable medical facilities for all segments of society. ",
   },
   {
     name: "Ms. Pooja Pawar",
     role: "Director",
-    image:
-      "https://images.pexels.com/photos/2182970/pexels-photo-2182970.jpeg?auto=compress&cs=tinysrgb&w=400",
+    image: femaleImg,
     bio: "Pooja Pawar is a Pharmacy graduate with over 10 years of professional experience in the pharmaceutical sector. Her core competencies include pharmaceutical distribution, exports, and hospital supply operations. She brings strong expertise in sales management and business development. With effective leadership, strategic planning, and team coordination skills, she has played an important role in strengthening sales operations and supporting the company’s overall growth and market presence. ",
   },
   {
     name: "Dr. Kamlesh Pathak",
     role: "Director",
-    image:
-      "https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=400",
+    image: maleImg,
     bio: "Dr. Kamlesh Pathak is a healthcare industry leader with 17+ years of experience across Healthcare IT and pharmaceutical Industry. He holds a BAMS and an MBA in Healthcare IT. Blending clinical expertise with strategic business leadership. For the past five years, he has served as Director of a pharmaceutical company, leading strategy, operations, and market growth while upholding quality and compliance standards. He is recognized for his results-driven leadership, deep industry insight, and commitment to building scalable, high-performance healthcare organizations.",
   },
 ];
 
 export default function About() {
+  const [activeValue, setActiveValue] = useState(0);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActiveValue((prev) => (prev + 1) % values.length);
+    }, 2000); // 2 sec
+
+    return () => clearInterval(interval);
+  }, [values.length]);
+
+
+
   return (
     <div className="relative min-h-screen w-full bg-slate-50 selection:bg-blue-100 font-sans text-slate-900">
       {/* 1. HERO SECTION */}
@@ -225,7 +241,7 @@ export default function About() {
         </section>
 
         {/* 3. VALUES */}
-        <section className="py-14">
+        {/* <section className="py-14">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <Section className="text-center mb-16">
               <h2 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
@@ -260,6 +276,97 @@ export default function About() {
                   </motion.div>
                 );
               })}
+            </div>
+          </div>
+        </section> */}
+        {/* 3. VALUES (Tabbed) */}
+        <section className="py-14">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <Section className="text-center mb-12">
+              <h2 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
+                Our Core Values
+              </h2>
+              <p className="mt-4 text-lg text-slate-600">
+                The principles that guide our science and our spirit.
+              </p>
+            </Section>
+
+            {/* Tabs container */}
+            <div className="mx-auto max-w-5xl">
+              {/* TAB BUTTONS */}
+              <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 mb-10">
+                {values.map((v, idx) => {
+                  const Icon = v.icon;
+                  const isActive = idx === activeValue;
+
+                  return (
+                    <button
+                      key={idx}
+                      onClick={() => setActiveValue(idx)}
+                      className={[
+                        "relative flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold transition",
+                        isActive
+                          ? "bg-slate-900 text-white shadow-lg"
+                          : "bg-white/70 text-slate-700 hover:bg-white border border-white/60",
+                      ].join(" ")}
+                    >
+                      <span
+                        className={[
+                          "grid place-items-center rounded-full w-8 h-8 transition",
+                          isActive ? "bg-white/15" : "bg-blue-50 text-blue-600",
+                        ].join(" ")}
+                      >
+                        <Icon size={16} />
+                      </span>
+                      {v.title}
+
+                      {/* Active pill underline */}
+                      {isActive && (
+                        <motion.span
+                          layoutId="valueTabActive"
+                          className="absolute -bottom-2 left-1/2 h-1 w-10 -translate-x-1/2 rounded-full bg-blue-500"
+                        />
+                      )}
+                    </button>
+                  );
+                })}
+              </div>
+
+              {/* TAB CONTENT */}
+              <div className="relative">
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={activeValue}
+                    initial={{ opacity: 0, y: 18, scale: 0.98 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: -12, scale: 0.99 }}
+                    transition={{ duration: 0.35, ease: "easeOut" }}
+                    className="rounded-[2rem] border border-white/60 bg-white/70 backdrop-blur-md shadow-xl p-8 md:p-10"
+                  >
+                    <div className="flex items-start gap-5">
+                      <div className="w-14 h-14 rounded-2xl bg-blue-50 flex items-center justify-center text-blue-600">
+                        {React.createElement(values[activeValue].icon, { size: 28 })}
+                      </div>
+
+                      <div className="flex-1">
+                        <h3 className="text-2xl font-bold text-slate-900 mb-2">
+                          {values[activeValue].title}
+                        </h3>
+                        <p className="text-slate-600 leading-relaxed text-base">
+                          {values[activeValue].desc}
+                        </p>
+
+                        {/* small “progress” row */}
+                        <div className="mt-6 flex items-center gap-2 text-xs font-semibold tracking-widest text-slate-400 uppercase">
+                          <span className="w-10 h-px bg-slate-200" />
+                          Value {activeValue + 1} of {values.length}
+                          <span className="w-10 h-px bg-slate-200" />
+                        </div>
+                      </div>
+                    </div>
+                  </motion.div>
+                </AnimatePresence>
+              </div>
             </div>
           </div>
         </section>
@@ -322,35 +429,35 @@ export default function About() {
         </section>
 
         {/* 5. BRAND IDENTITY & PRESENCE */}
-        <section className="py-20 relative overflow-hidden">
+        {/* <section className="py-20 relative overflow-hidden">
           <div className="absolute top-1/2 left-0 w-full h-full bg-slate-100 -skew-y-3 -z-10 origin-left scale-110" />
 
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid lg:grid-cols-2 gap-16 items-stretch">
+            <div className="grid lg:grid-cols-2 gap-16 items-stretch"> */}
               {/* LEFT: REDESIGNED LOGO STORY */}
-              <Section className="h-full">
-                <div className="relative bg-white/80 backdrop-blur-sm p-8 rounded-[2rem] border border-white shadow-xl h-full flex flex-col">
+              {/* <Section className="h-full">
+                <div className="relative bg-white/80 backdrop-blur-sm p-8 rounded-[2rem] border border-white shadow-xl h-full flex flex-col"> */}
                   {/* Logo Header */}
-                  <div className="flex items-center justify-between mb-8">
+                  {/* <div className="flex items-center justify-between mb-8">
                     <div className="h-16 w-16 bg-blue-100 rounded-2xl flex items-center justify-center text-blue-600">
                       <ShieldCheck size={32} />
                     </div>
                     <span className="text-xs font-bold tracking-widest text-slate-400 uppercase">
                       Brand Identity
                     </span>
-                  </div>
+                  </div> */}
 
                   {/* Main Logo Display */}
-                  <div className="flex-grow flex items-center justify-center py-8">
+                  {/* <div className="flex-grow flex items-center justify-center py-8">
                     <img
                       src={IriyoLogo}
                       alt="Iriyo Pharma Logo"
                       className="w-48 object-contain hover:scale-105 transition-transform duration-500 drop-shadow-2xl"
                     />
-                  </div>
+                  </div> */}
 
                   {/* Story Footer */}
-                  <div className="mt-8 border-t border-slate-100 pt-6">
+                  {/* <div className="mt-8 border-t border-slate-100 pt-6">
                     <h3 className="text-2xl font-bold text-slate-900 mb-2">
                       The Mark of Care
                     </h3>
@@ -372,19 +479,103 @@ export default function About() {
                     </div>
                   </div>
                 </div>
-              </Section>
+              </Section> */}
 
               {/* RIGHT: MAP COMPONENT */}
-              <Section className="h-full">
+              {/* <Section className="h-full">
                 <div className="h-full min-h-[560px]">
                   <FreePremiumMap className="h-full" />
                 </div>
               </Section>
             </div>
           </div>
+        </section> */}
+        {/* 5. BRAND IDENTITY (Full width, big like video) */}
+        <section className="py-16 md:py-20 relative overflow-hidden">
+          <div className="absolute top-1/2 left-0 w-full h-full bg-slate-100 -skew-y-3 -z-10 origin-left scale-110" />
+
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <Section className="text-center mb-10">
+              <h2 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
+                Brand Identity
+              </h2>
+              <p className="mt-3 text-lg text-slate-600">
+                A mark that reflects trust, care, and quality.
+              </p>
+            </Section>
+
+            <Section className="rounded-[2.25rem] border border-white/60 bg-white/75 backdrop-blur-md shadow-2xl overflow-hidden">
+              <div className="grid lg:grid-cols-2 items-stretch">
+                {/* LOGO */}
+                <div className="p-10 md:p-14 flex items-center justify-center bg-gradient-to-br from-white to-slate-50">
+                  <img
+                    src={IriyoLogo}
+                    alt="Iriyo Pharma Logo"
+                    className="w-[260px] md:w-[340px] lg:w-[380px] object-contain drop-shadow-2xl"
+                  />
+                </div>
+
+                {/* TEXT */}
+                <div className="p-10 md:p-14 flex flex-col justify-center">
+                  <div className="flex items-center gap-3 mb-5">
+                    <div className="w-12 h-12 rounded-2xl bg-blue-100 flex items-center justify-center text-blue-600">
+                      <ShieldCheck size={24} />
+                    </div>
+                    <p className="text-xs font-bold tracking-widest text-slate-400 uppercase">
+                      Iriyo Pharma
+                    </p>
+                  </div>
+
+                  <h3 className="text-3xl font-bold text-slate-900 mb-4 leading-tight">
+                    The Iriyo Logo
+                  </h3>
+
+                  <p className="text-slate-600 leading-relaxed text-lg">
+                    The Iriyo logo represents trust, care, and quality in healthcare.
+                    Inspired by the Japanese word for medical care, it reflects Iriyo
+                    Pharma’s commitment to ethical practices, reliable medicines, and
+                    patient-focused solutions.
+                  </p>
+
+                  <div className="mt-8 flex flex-wrap items-center gap-3 text-sm font-semibold">
+                    <span className="px-4 py-2 rounded-full bg-blue-50 text-blue-700">
+                      Trust
+                    </span>
+                    <span className="px-4 py-2 rounded-full bg-blue-50 text-blue-700">
+                      Ethics
+                    </span>
+                    <span className="px-4 py-2 rounded-full bg-blue-50 text-blue-700">
+                      Quality
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </Section>
+          </div>
         </section>
 
-        {/* 6. QUOTE SECTION */}
+        {/* 6. PRESENCE MAP*/}
+        <section className="py-14">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <Section className="text-center mb-10">
+              <h2 className="text-3xl font-bold tracking-tight text-slate-900">
+                Our Presence
+              </h2>
+              <p className="mt-3 text-lg text-slate-600">
+                Reach across regions, built on reliable supply and service.
+              </p>
+            </Section>
+
+            <Section className="relative w-full overflow-hidden rounded-[2rem] border border-white/60 bg-white/60 backdrop-blur-md shadow-2xl">
+              <div className="w-full h-[50vh] md:h-[75vh]">
+                <FreePremiumMap className="h-full w-full" />
+              </div>
+            </Section>
+          </div>
+        </section>
+
+
+        {/* 6. QUOTE SECTION
         <section className="py-24 relative overflow-hidden">
           <div className="absolute inset-0 bg-slate-900/90 backdrop-blur-xl -z-10" />
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[500px] bg-blue-600/20 blur-[100px] rounded-full pointer-events-none" />
@@ -408,7 +599,7 @@ export default function About() {
               <div className="h-px w-12 bg-blue-500/50"></div>
             </div>
           </motion.div>
-        </section>
+        </section> */}
       </div>
     </div>
   );
