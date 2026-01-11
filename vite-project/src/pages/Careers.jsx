@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { usePayload } from "../hooks/usePayload";
-// import lifeAtIriyoVideo from "../assets/videos/life-at-iriyo.mp4"; // UNCOMMENT THIS when you have your video
+import lifeAtIriyoVideo from "../assets/LifeAtIriyo/video.mp4"; // UNCOMMENT THIS when you have your video
 
 // --- Background Component ---
 const BackgroundLayer = () => (
@@ -75,19 +75,19 @@ export default function Careers() {
       {/* Adjusted padding: py-24 for internal spacing, mb-12 to reduce gap below */}
       <section className="relative w-full py-24 overflow-hidden mb-12">
         {/* VIDEO BACKGROUND */}
-        <div className="absolute inset-0 w-full h-full">
-          {/* REPLACE THE SRC BELOW WITH YOUR ACTUAL VIDEO PATH */}
+        <div className="absolute inset-0 w-full h-full overflow-hidden">
+          {/* Blurred Video */}
           <video
             autoPlay
             loop
             muted
             playsInline
-            className="w-full h-full object-cover"
-            // src={lifeAtIriyoVideo}
-            src="https://assets.mixkit.co/videos/preview/mixkit-scientists-working-in-a-laboratory-4545-large.mp4" // Placeholder video
+            className="w-full h-full object-cover scale-110 brightness-75"
+            src={lifeAtIriyoVideo}
           />
-          {/* Dark Overlay for text readability */}
-          <div className="absolute inset-0 bg-slate-900 backdrop-blur-[2px]" />
+
+          {/* Dark overlay for contrast */}
+          <div className="absolute inset-0 bg-slate-900/60" />
         </div>
 
         {/* CONTENT */}
