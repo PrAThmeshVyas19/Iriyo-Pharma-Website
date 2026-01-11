@@ -13,6 +13,8 @@ import {
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { usePayload } from "../hooks/usePayload";
+import Contact from "../components/ContactForCareer";
+
 // import lifeAtIriyoVideo from "../assets/videos/life-at-iriyo.mp4"; // UNCOMMENT THIS when you have your video
 
 // --- Background Component ---
@@ -229,7 +231,8 @@ export default function Careers() {
             <div className="text-center py-20 bg-white/50 rounded-3xl border border-dashed border-slate-300">
               <Search className="mx-auto h-12 w-12 text-slate-300 mb-4" />
               <h3 className="text-lg font-medium text-slate-900">
-                No open positions
+                {/* No open positions */}
+                We Are Not Hiring
               </h3>
               <p className="text-slate-500">
                 Please check back later for new opportunities.
@@ -238,6 +241,11 @@ export default function Careers() {
           )}
         </div>
       </div>
+
+      {/* --- for Constact section  --- */}
+      <Contact />
+
+
     </div>
   );
 }

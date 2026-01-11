@@ -194,11 +194,19 @@ export default function NewsDetails() {
           className="mb-16 -mx-4 md:-mx-0 rounded-none md:rounded-3xl overflow-hidden shadow-2xl shadow-slate-200/50 ring-1 ring-slate-900/5 bg-white"
         >
           {post.image ? (
-            <img
-              src={getPayloadImage(post.image)}
-              alt={post.title}
-              className="w-full h-auto object-cover aspect-video"
-            />
+            // <img
+            //   src={getPayloadImage(post.image)}
+            //   alt={post.title}
+            //   className="w-full h-auto object-cover aspect-video"
+            // />
+            <div className="w-full aspect-video bg-white">
+              <img
+                src={getPayloadImage(post.image)}
+                alt={post.title}
+                className="w-full h-full object-contain"
+              />
+            </div>
+
           ) : (
             <div className="w-full aspect-video flex items-center justify-center text-slate-400 bg-slate-100">
               No Image Available
