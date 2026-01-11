@@ -26,7 +26,7 @@ import {
 
 import IriyoLogo from "../assets/logo/IriyoLogo.png";
 // Make sure to add your about video here
-import aboutVideo from "../assets/About-Video/video3.mp4";
+import aboutVideo from "../assets/About-Video/video4.mp4";
 
 // for location maps
 import FreePremiumMap from "../components/FreePremiumMap";
@@ -127,26 +127,32 @@ const directors = [
 export default function About() {
   return (
     <div className="relative min-h-screen w-full bg-slate-50 selection:bg-blue-100 font-sans text-slate-900">
-      {/* 1. HERO SECTION: Video & Text Separated */}
-      <div className="w-full flex flex-col">
-        {/* A. The Video (Clean, No Blur, No Overlay) */}
-        <div className="relative w-full h-[50vh] md:h-[75vh] overflow-hidden">
-          <video
-            autoPlay
-            loop
-            muted
-            playsInline
-            className="absolute inset-0 w-full h-full object-cover"
-          >
-            <source src={aboutVideo} type="video/mp4" />
-          </video>
-        </div>
+      {/* 1. HERO SECTION */}
+      <section className="relative w-full h-[85vh] md:h-screen overflow-hidden bg-black">
+        {/* Hero Video */}
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          preload="auto"
+          className="
+      absolute inset-0
+      w-full h-full
+      object-cover
+      object-[50%_30%]
+      md:object-center
+    "
+        >
+          <source src={aboutVideo} type="video/mp4" />
+        </video>
+      </section>
 
-        {/* B. The Text (Located below the video) */}
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-16 md:py-20">
+      {/* ABOUT TEXT SECTION (BELOW HERO) */}
+      <section className="relative z-10 bg-white py-14 md:py-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <Section className="text-center max-w-4xl mx-auto">
             <h3 className="text-3xl font-bold mb-4 tracking-tight">About Us</h3>
-            {/* Note: I changed the text color to slate-700 because it is now on a white background */}
             <p className="mt-4 text-lg text-slate-600">
               IRIYO Pharma is a pharmaceutical company founded by experienced
               professionals with extensive exposure to the healthcare and
@@ -156,7 +162,7 @@ export default function About() {
             </p>
           </Section>
         </div>
-      </div>
+      </section>
 
       {/* Background layer for the rest of the page */}
       <BackgroundLayer />
