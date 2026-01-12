@@ -165,7 +165,7 @@ export default function About() {
       </section>
 
       {/* ABOUT TEXT SECTION (BELOW HERO) */}
-      <section className="relative z-10 bg-white py-14 md:py-20">
+      {/* <section className="relative z-10 bg-white py-14 md:py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <Section className="text-center max-w-4xl mx-auto">
             <h3 className="text-3xl font-bold mb-4 tracking-tight">About Us</h3>
@@ -178,7 +178,7 @@ export default function About() {
             </p>
           </Section>
         </div>
-      </section>
+      </section> */}
 
       {/* Background layer for the rest of the page */}
       <BackgroundLayer />
