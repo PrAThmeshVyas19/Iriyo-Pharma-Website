@@ -35,15 +35,181 @@ const announcements = [
   },
 ];
 
+// const holidays2026 = [
+//   { date: "26 Jan", day: "Monday", name: "Republic Day" },
+//   { date: "04 Mar", day: "Wednesday", name: "Holi" },
+//   { date: "15 Aug", day: "Saturday", name: "Independence Day" },
+//   { date: "02 Oct", day: "Friday", name: "Gandhi Jayanti" },
+//   { date: "20 Oct", day: "Tuesday", name: "Dussehra" },
+//   { date: "08 Nov", day: "Sunday", name: "Diwali (Deepavali)" },
+//   { date: "25 Dec", day: "Friday", name: "Christmas" },
+// ];
 const holidays2026 = [
-  { date: "26 Jan", day: "Monday", name: "Republic Day" },
-  { date: "04 Mar", day: "Wednesday", name: "Holi" },
-  { date: "15 Aug", day: "Saturday", name: "Independence Day" },
-  { date: "02 Oct", day: "Friday", name: "Gandhi Jayanti" },
-  { date: "20 Oct", day: "Tuesday", name: "Dussehra" },
-  { date: "08 Nov", day: "Sunday", name: "Diwali (Deepavali)" },
-  { date: "25 Dec", day: "Friday", name: "Christmas" },
+  { date: "2026-01-26", name: "Republic Day" },
+  { date: "2026-03-04", name: "Holi" },
+  { date: "2026-08-15", name: "Independence Day" },
+  { date: "2026-10-02", name: "Gandhi Jayanti" },
+  { date: "2026-10-20", name: "Dussehra" },
+  { date: "2026-11-08", name: "Diwali (Deepavali)" },
+  { date: "2026-12-25", name: "Christmas" },
 ];
+function HolidayCalendar({ year = 2026, holidays = [] }) {
+  const [monthIndex, setMonthIndex] = useState(0); // 0 = Jan
+  const [selectedDate, setSelectedDate] = useState(null);
+
+  // Build quick lookup map: "YYYY-MM-DD" -> holiday object
+  const holidayMap = React.useMemo(() => {
+    const m = new Map();
+    holidays.forEach((h) => m.set(h.date, h));
+    return m;
+  }, [holidays]);
+
+  const monthNames = [
+    "January","February","March","April","May","June",
+    "July","August","September","October","November","December",
+  ];
+
+  const firstDay = new Date(year, monthIndex, 1);
+  const daysInMonth = new Date(year, monthIndex + 1, 0).getDate();
+  const startWeekday = firstDay.getDay(); // 0 Sun .. 6 Sat
+
+  const cells = [];
+  // leading empty cells
+  for (let i = 0; i < startWeekday; i++) cells.push(null);
+  // days
+  for (let d = 1; d <= daysInMonth; d++) cells.push(d);
+  // trailing empty cells to complete 6 rows (42 cells)
+  while (cells.length < 42) cells.push(null);
+
+  const toISO = (d) => {
+    const mm = String(monthIndex + 1).padStart(2, "0");
+    const dd = String(d).padStart(2, "0");
+    return `${year}-${mm}-${dd}`;
+  };
+
+  const monthHolidays = holidays
+    .filter((h) => {
+      const dt = new Date(h.date);
+      return dt.getFullYear() === year && dt.getMonth() === monthIndex;
+    })
+    .sort((a, b) => a.date.localeCompare(b.date));
+
+  return (
+    <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden max-w-4xl w-full">
+      {/* Header */}
+      <div className="bg-indigo-600 p-4 flex items-center justify-between gap-3">
+        <button
+          onClick={() => setMonthIndex((m) => (m === 0 ? 11 : m - 1))}
+          className="px-3 py-1.5 rounded-lg bg-white/10 text-white hover:bg-white/20 transition"
+        >
+          Prev
+        </button>
+
+        <div className="text-center">
+          <h3 className="text-white font-extrabold text-lg">
+            {monthNames[monthIndex]} {year}
+          </h3>
+          <p className="text-white/80 text-xs">Holidays & Festivals highlighted</p>
+        </div>
+
+        <button
+          onClick={() => setMonthIndex((m) => (m === 11 ? 0 : m + 1))}
+          className="px-3 py-1.5 rounded-lg bg-white/10 text-white hover:bg-white/20 transition"
+        >
+          Next
+        </button>
+      </div>
+
+      {/* Weekday row */}
+      <div className="grid grid-cols-7 text-xs font-bold text-slate-500 bg-slate-50 border-b border-slate-200">
+        {["Sun","Mon","Tue","Wed","Thu","Fri","Sat"].map((w) => (
+          <div key={w} className="p-3 text-center">{w}</div>
+        ))}
+      </div>
+
+      {/* Calendar grid */}
+      <div className="grid grid-cols-7">
+        {cells.map((day, idx) => {
+          if (!day) {
+            return <div key={idx} className="h-16 border-b border-r border-slate-100 bg-white" />;
+          }
+
+          const iso = toISO(day);
+          const holiday = holidayMap.get(iso);
+          const isSelected = selectedDate === iso;
+
+          return (
+            <button
+              key={idx}
+              onClick={() => setSelectedDate(iso)}
+              className={[
+                "h-16 border-b border-r border-slate-100 p-2 text-left transition",
+                "hover:bg-slate-50",
+                holiday ? "bg-indigo-50" : "bg-white",
+                isSelected ? "ring-2 ring-indigo-500 ring-inset" : "",
+              ].join(" ")}
+              title={holiday ? holiday.name : ""}
+            >
+              <div className="flex items-start justify-between">
+                <span className="text-sm font-bold text-slate-900">{day}</span>
+                {holiday && (
+                  <span className="text-[10px] px-2 py-0.5 rounded-full bg-indigo-600 text-white font-semibold">
+                    Holiday
+                  </span>
+                )}
+              </div>
+
+              {holiday && (
+                <div className="mt-1 text-[11px] font-semibold text-indigo-700 line-clamp-2">
+                  {holiday.name}
+                </div>
+              )}
+            </button>
+          );
+        })}
+      </div>
+
+      {/* Footer info */}
+      <div className="p-4 grid md:grid-cols-2 gap-4">
+        <div className="rounded-xl border border-slate-200 p-4">
+          <h4 className="font-bold text-slate-900 mb-2">Selected Date</h4>
+          {selectedDate ? (
+            holidayMap.get(selectedDate) ? (
+              <div>
+                <p className="text-slate-700 font-semibold">{selectedDate}</p>
+                <p className="text-indigo-700 font-bold mt-1">
+                  {holidayMap.get(selectedDate).name}
+                </p>
+              </div>
+            ) : (
+              <p className="text-slate-600">{selectedDate} — No holiday listed.</p>
+            )
+          ) : (
+            <p className="text-slate-500">Click any date to see details.</p>
+          )}
+        </div>
+
+        <div className="rounded-xl border border-slate-200 p-4">
+          <h4 className="font-bold text-slate-900 mb-2">
+            {monthNames[monthIndex]} Holidays
+          </h4>
+          {monthHolidays.length ? (
+            <ul className="space-y-2">
+              {monthHolidays.map((h) => (
+                <li key={h.date} className="flex items-center justify-between gap-3">
+                  <span className="text-slate-700 font-semibold">{h.name}</span>
+                  <span className="text-xs text-slate-500">{h.date}</span>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className="text-slate-500 text-sm">No holidays added for this month.</p>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export default function News() {
   // ONLY UI state added 
@@ -266,17 +432,17 @@ export default function News() {
             </div>
           </div>
         )} */}
-        {activeTab === "events" && (
+        {/* {activeTab === "events" && (
         <div className="mb-24">
           <div className="flex items-center gap-3 mb-6 justify-center">
             <div className="p-2 bg-indigo-100 rounded-lg text-indigo-600">
               <Calendar size={24} />
             </div>
             <h2 className="text-2xl font-bold text-slate-900">Events 2026</h2>
-          </div>
+          </div> */}
 
           {/* CENTERED CALENDAR */}
-          <div className="flex justify-center">
+          {/* <div className="flex justify-center">
             <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden max-w-xl w-full">
               <div className="bg-indigo-600 p-4">
                 <h3 className="text-white font-bold text-center">
@@ -310,7 +476,22 @@ export default function News() {
             </div>
           </div>
         </div>
-      )}
+      )} */}
+      {activeTab === "events" && (
+      <div className="mb-24">
+        <div className="flex items-center gap-3 mb-6 justify-center">
+          <div className="p-2 bg-indigo-100 rounded-lg text-indigo-600">
+            <Calendar size={24} />
+          </div>
+          <h2 className="text-2xl font-bold text-slate-900">Events {2026}</h2>
+        </div>
+
+        <div className="flex justify-center">
+          <HolidayCalendar year={2026} holidays={holidays2026} />
+        </div>
+      </div>
+    )}
+
 
 
         {/* ================= TAB 4: STORIES ================= */}
