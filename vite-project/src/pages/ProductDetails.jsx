@@ -154,10 +154,14 @@ export default function ProductDetails() {
               <h3 className="text-slate-900 font-bold text-xl mb-3">
                 Description
               </h3>
-              <p className="leading-relaxed">
+              {/* <p className="leading-relaxed">
                 {product.description ||
                   "No description available for this product."}
+              </p> */}
+              <p className="leading-relaxed whitespace-pre-line">
+                {product.description || "No description available for this product."}
               </p>
+
             </div>
 
             {/* <div className="flex flex-col sm:flex-row gap-4 pt-8 border-t border-slate-200">
