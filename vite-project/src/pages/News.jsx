@@ -239,7 +239,8 @@ export default function News() {
         <div className="text-center mb-16">
           
           <h1 className="text-4xl md:text-5xl font-extrabold text-slate-900 mb-6">
-            News & <span className="text-indigo-600">Media Center</span>
+            {/* News & <span className="text-indigo-600">Media Center</span> */}
+            News & Media Center
           </h1>
           {/* <p className="text-lg text-slate-600 max-w-2xl mx-auto">
            */}

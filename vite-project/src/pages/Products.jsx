@@ -71,7 +71,8 @@ export default function Products() {
             animate={{ opacity: 1, y: 0 }}
             className="text-4xl md:text-5xl font-extrabold text-slate-900 mb-6"
           >
-            Iriyo's <span className="text-blue-600">Products</span>
+            {/* Iriyo's <span className="text-blue-600">Products</span> */}
+            Iriyo's Products
           </motion.h1>
 
           {/* Description Text */}

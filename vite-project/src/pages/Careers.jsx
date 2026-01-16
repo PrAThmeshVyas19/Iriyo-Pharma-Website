@@ -161,10 +161,14 @@ export default function Careers() {
             transition={{ delay: 0.1 }}
             className="text-4xl md:text-5xl font-extrabold text-slate-900 mb-6"
           >
-            Build the Future of{" "}
+            {/* Build the Future of{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-600 to-emerald-600">
               Healthcare
-            </span>
+            </span> */}
+            Build the Future of{" "}
+            {/* <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-600 to-emerald-600"> */}
+              Healthcare
+            {/* </span> */}
           </motion.h1>
           <p className="max-w-2xl mx-auto text-slate-600 text-lg">
             We are looking for passionate innovators to help us discover and

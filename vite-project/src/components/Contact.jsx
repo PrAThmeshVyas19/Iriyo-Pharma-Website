@@ -185,15 +185,19 @@ export default function Contact() {
   ];
 
   return (
-    <section
-      id="contact"
-      className="relative py-24 bg-slate-50 min-h-screen overflow-hidden"
-    >
+    // <section
+    //   id="contact"
+    //   className="relative py-24 bg-slate-50 min-h-screen overflow-hidden"
+    // >
+    <section id="contact" className="relative py-16 sm:py-20 bg-slate-50 min-h-screen overflow-hidden">
+
       <BackgroundLayer />
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="text-center max-w-3xl mx-auto mb-20">
+        {/* <div className="text-center max-w-3xl mx-auto mb-20"> */}
+        <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-14">
+
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             whileInView={{ opacity: 1, scale: 1 }}
@@ -211,9 +215,9 @@ export default function Contact() {
             className="text-4xl md:text-5xl font-extrabold text-slate-900 mb-6 tracking-tight"
           >
             Start a Conversation with{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">
+            {/* <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600"> */}
               Iriyo Pharma
-            </span>
+            {/* </span> */}
           </motion.h2>
 
           <motion.p
@@ -228,43 +232,18 @@ export default function Contact() {
           </motion.p>
         </div>
 
-        {/* Contact Info Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
-          {contactInfo.map((info, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.1 }}
-              className="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
-            >
-              <div
-                className={`w-12 h-12 ${info.bg} ${info.color} rounded-xl flex items-center justify-center mb-4`}
-              >
-                <info.icon className="w-6 h-6" />
-              </div>
-              <h3 className="text-lg font-bold text-slate-900 mb-2">
-                {info.title}
-              </h3>
-              {info.details.map((line, i) => (
-                <p
-                  key={i}
-                  className="text-slate-500 text-sm font-medium whitespace-pre-line leading-relaxed"
-                >
-                  {line}
-                </p>
-              ))}
-            </motion.div>
-          ))}
-        </div>
-
         {/* --- Single Centered Form Card --- */}
-        <motion.div
+        {/* <motion.div
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           className="max-w-3xl mx-auto"
+        > */}
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="max-w-3xl mx-auto mb-16"
         >
           <div className="bg-white rounded-[2rem] shadow-2xl border border-slate-100 overflow-hidden relative">
             {/* Top Decoration Line */}
@@ -426,6 +405,39 @@ export default function Contact() {
             </div>
           </div>
         </motion.div>
+
+
+        {/* Contact Info Cards */}
+        {/* <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16"> */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {contactInfo.map((info, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: index * 0.1 }}
+              className="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
+            >
+              <div
+                className={`w-12 h-12 ${info.bg} ${info.color} rounded-xl flex items-center justify-center mb-4`}
+              >
+                <info.icon className="w-6 h-6" />
+              </div>
+              <h3 className="text-lg font-bold text-slate-900 mb-2">
+                {info.title}
+              </h3>
+              {info.details.map((line, i) => (
+                <p
+                  key={i}
+                  className="text-slate-500 text-sm font-medium whitespace-pre-line leading-relaxed"
+                >
+                  {line}
+                </p>
+              ))}
+            </motion.div>
+          ))}
+        </div>
 
         {/* Social Links Footer */}
         <motion.div

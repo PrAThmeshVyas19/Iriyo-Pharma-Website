@@ -61,7 +61,7 @@ export default function Hero() {
         >
           <source src={iriyoVideo} type="video/mp4" />
         </video>
-
+        {/* <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-b from-transparent to-slate-50" /> */}
         {/* Gradient Overlay - Always visible to ensure text contrast */}
         {/* <div className="absolute inset-0 bg-gradient-to-b from-slate-900/40 via-slate-900/20 to-slate-900/90" /> */}
 

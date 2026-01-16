@@ -65,7 +65,7 @@ export default function Summary() {
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* --- Top Text Section --- */}
         <Section className="text-center max-w-4xl mx-auto mb-16">
-          <motion.div
+          {/* <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
@@ -73,13 +73,19 @@ export default function Summary() {
           >
             <span className="flex h-2 w-2 rounded-full bg-blue-600 mr-2 animate-pulse"></span>
             Summary
-          </motion.div>
+          </motion.div> */}
 
+          {/* below one is dark blue color title*/}
+          {/* <h2 className="text-3xl md:text-4xl font-extrabold text-blue-900 mb-8 tracking-tight">
+            Committed to a Healthier World
+          </h2> */}
+
+          
           <h2 className="text-3xl md:text-4xl font-extrabold text-slate-900 mb-8 tracking-tight">
             Committed to a{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">
+            {/* <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600"> */}
               Healthier World
-            </span>
+            {/* </span> */}
           </h2>
 
           <div className="space-y-6 text-slate-600 text-lg leading-relaxed">

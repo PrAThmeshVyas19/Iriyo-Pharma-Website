@@ -99,7 +99,7 @@ const values = [
   {
     icon: HandHeart,
     title: "Responsibility",
-    desc: "We act responsible by placing patient safety, quality and trust at the center of everything we do.",
+    desc: "We act responsibly by placing patient safety, quality and trust at the center of everything we do.",
   },
   {
     icon: Sprout,
@@ -162,6 +162,8 @@ export default function About() {
         >
           <source src={aboutVideo} type="video/mp4" />
         </video>
+        {/* newly added to that edge visible nako mhanun*/}
+        <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-b from-transparent to-slate-50" />
       </section>
 
       {/* ABOUT TEXT SECTION (BELOW HERO) */}
@@ -188,40 +190,55 @@ export default function About() {
         <section className="py-14">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
-              <Section className="group relative overflow-hidden rounded-[2rem] bg-slate-900/95 backdrop-blur-md text-white p-8 lg:p-12 shadow-2xl ring-1 ring-white/10">
+              {/* <Section className="group relative overflow-hidden rounded-[2rem] bg-slate-900/95 backdrop-blur-md text-white p-8 lg:p-12 shadow-2xl ring-1 ring-white/10"> */}
+              {/* <Section className="group relative overflow-hidden rounded-[2rem] border border-white/50 bg-white/60 backdrop-blur-md p-8 lg:p-12 shadow-lg"> */}
+              <Section className="group relative overflow-hidden rounded-[2rem] border border-green-200/60 bg-green-50/80 backdrop-blur-md p-8 lg:p-12 shadow-lg">
+
                 <div className="absolute top-0 right-0 p-8 opacity-10 transition-transform duration-700 group-hover:scale-110 group-hover:rotate-12">
                   <Target size={240} />
                 </div>
                 <div className="relative z-10 flex flex-col h-full justify-between">
                   <div>
-                    <div className="w-14 h-14 rounded-2xl bg-blue-500/20 flex items-center justify-center mb-8 ring-1 ring-white/10">
+                    {/* <div className="w-14 h-14 rounded-2xl bg-blue-500/20 flex items-center justify-center mb-8 ring-1 ring-white/10">
                       <Target className="text-blue-400 w-7 h-7" />
+                    </div> */}
+                    <div className="w-14 h-14 rounded-2xl bg-green-100 flex items-center justify-center mb-8">
+                      <Target className="text-green-600 w-7 h-7" />
                     </div>
+
                     <h3 className="text-3xl font-bold mb-4 tracking-tight">
                       Our Mission
                     </h3>
-                    <p className="text-slate-300 text-lg leading-relaxed">
+                    {/* <p className="text-slate-300 text-lg leading-relaxed"> */}
+                    <p className="text-slate-600 text-lg leading-relaxed">
+
                       Our mission is to serve with care and humility by
                       delivering quality medicines through ethical practices,
                       resilient healthcare solutions, and responsible
                       innovation. By caring for and protecting every “I”, we
                       remain committed to accessibility, patient safety, and
-                      trust—working purposefully to support healthier lives and
+                      trust working purposefully to support healthier lives and
                       stronger healthcare systems.
                     </p>
                   </div>
                 </div>
               </Section>
 
-              <Section className="group relative overflow-hidden rounded-[2rem] border border-white/50 bg-white/60 backdrop-blur-md p-8 lg:p-12 shadow-lg">
+              <Section className="group relative overflow-hidden rounded-[2rem] border border-green-200/60 bg-green-50/80 backdrop-blur-md p-8 lg:p-12 shadow-lg">
+
+              {/* <Section className="group relative overflow-hidden rounded-[2rem] border border-white/50 bg-white/60 backdrop-blur-md p-8 lg:p-12 shadow-lg"> */}
                 <div className="absolute bottom-0 right-0 p-8 opacity-5 transition-transform duration-700 group-hover:scale-110 group-hover:-rotate-12">
                   <Eye size={240} />
                 </div>
                 <div className="relative z-10 flex flex-col h-full justify-between">
                   <div>
-                    <div className="w-14 h-14 rounded-2xl bg-blue-100 flex items-center justify-center mb-8">
+                    {/* <div className="w-14 h-14 rounded-2xl bg-blue-100 flex items-center justify-center mb-8">
                       <Eye className="text-blue-600 w-7 h-7" />
+                    </div> */}
+                    <div className="w-14 h-14 rounded-2xl bg-green-100 flex items-center justify-center mb-8">
+                      <Eye className="text-green-600 w-7 h-7" />
                     </div>
+
                     <h3 className="text-3xl font-bold mb-4 text-slate-900 tracking-tight">
                       Our Vision
                     </h3>
@@ -281,6 +298,8 @@ export default function About() {
         </section> */}
         {/* 3. VALUES (Tabbed) */}
         <section className="py-14">
+        {/* <section className="py-16 bg-gradient-to-br from-blue-50 via-indigo-50 to-white"> */}
+
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <Section className="text-center mb-12">
               <h2 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
@@ -305,15 +324,32 @@ export default function About() {
                       onClick={() => setActiveValue(idx)}
                       className={[
                         "relative flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold transition",
+                        // isActive
+                        //   ? "bg-slate-900 text-white shadow-lg"
+                        // isActive
+                        //   ? "bg-orange-500 text-white shadow-lg"
+                        //   // : "bg-white/70 text-slate-700 hover:bg-white border border-white/60",
+                        //   : "bg-white/70 text-slate-700 hover:bg-white border border-orange-200"
+
                         isActive
-                          ? "bg-slate-900 text-white shadow-lg"
-                          : "bg-white/70 text-slate-700 hover:bg-white border border-white/60",
+                          ? "bg-orange-200 text-orange-800 shadow-md"
+                          : "bg-white/70 text-slate-700 hover:bg-white border border-orange-200"
+
+
                       ].join(" ")}
                     >
                       <span
                         className={[
                           "grid place-items-center rounded-full w-8 h-8 transition",
-                          isActive ? "bg-white/15" : "bg-blue-50 text-blue-600",
+                          // isActive ? "bg-white/15" : "bg-blue-50 text-blue-600",
+                          // isActive ? "bg-orange-400/20" : "bg-blue-50 text-blue-600"
+                          // isActive
+                          //   ? "bg-orange-400/20 text-orange-600"
+                          //   : "bg-orange-100 text-orange-500",
+                          isActive
+                            ? "bg-orange-300/20 text-orange-700"
+                            : "bg-orange-100 text-orange-500"
+
                         ].join(" ")}
                       >
                         <Icon size={16} />
@@ -324,7 +360,9 @@ export default function About() {
                       {isActive && (
                         <motion.span
                           layoutId="valueTabActive"
-                          className="absolute -bottom-2 left-1/2 h-1 w-10 -translate-x-1/2 rounded-full bg-blue-500"
+                          className="absolute -bottom-2 left-1/2 h-1 w-10 -translate-x-1/2 rounded-full bg-orange-400"
+
+                          // className="absolute -bottom-2 left-1/2 h-1 w-10 -translate-x-1/2 rounded-full bg-blue-500"
                         />
                       )}
                     </button>
@@ -333,7 +371,9 @@ export default function About() {
               </div>
 
               {/* TAB CONTENT */}
-              <div className="relative">
+              {/* <div className="relative"> */}
+              <div className="relative before:absolute before:inset-0 before:rounded-[2.5rem] before:bg-indigo-200/20 before:blur-3xl before:-z-10">
+
                 <AnimatePresence mode="wait">
                   <motion.div
                     key={activeValue}
@@ -341,10 +381,20 @@ export default function About() {
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: -12, scale: 0.99 }}
                     transition={{ duration: 0.35, ease: "easeOut" }}
-                    className="rounded-[2rem] border border-white/60 bg-white/70 backdrop-blur-md shadow-xl p-8 md:p-10"
+                    // className="rounded-[2rem] border border-white/60 bg-white/50 backdrop-blur-xl shadow-xl p-8 md:p-10 ring-1 ring-slate-900/5"
+
+                    // prev
+                    // className="rounded-[2rem] border border-white/60 bg-white/70 backdrop-blur-md shadow-xl p-8 md:p-10"
+                    
+                    //  below one was good plain glass
+                    // className="rounded-[2rem] border border-white/60 bg-white/50 backdrop-blur-xl shadow-xl p-8 md:p-10 ring-1 ring-slate-900/5"
+                    className="rounded-[2rem] border border-orange-200/60 bg-orange-50/80 backdrop-blur-xl shadow-xl p-8 md:p-10 ring-1 ring-orange-300/30"
+
                   >
                     <div className="flex items-start gap-5">
-                      <div className="w-14 h-14 rounded-2xl bg-blue-50 flex items-center justify-center text-blue-600">
+                      {/* <div className="w-14 h-14 rounded-2xl bg-blue-50 flex items-center justify-center text-blue-600"> */}
+                      <div className="w-14 h-14 rounded-2xl bg-orange-100 flex items-center justify-center text-orange-600">
+
                         {React.createElement(values[activeValue].icon, { size: 28 })}
                       </div>
 
@@ -352,16 +402,18 @@ export default function About() {
                         <h3 className="text-2xl font-bold text-slate-900 mb-2">
                           {values[activeValue].title}
                         </h3>
-                        <p className="text-slate-600 leading-relaxed text-base">
+                        {/* <p className="text-slate-600 leading-relaxed text-base"> */}
+                        <p className="text-slate-600 leading-relaxed text-lg md:text-xl">
+
                           {values[activeValue].desc}
                         </p>
 
                         {/* small “progress” row */}
-                        <div className="mt-6 flex items-center gap-2 text-xs font-semibold tracking-widest text-slate-400 uppercase">
+                        {/* <div className="mt-6 flex items-center gap-2 text-xs font-semibold tracking-widest text-slate-400 uppercase">
                           <span className="w-10 h-px bg-slate-200" />
                           Value {activeValue + 1} of {values.length}
                           <span className="w-10 h-px bg-slate-200" />
-                        </div>
+                        </div> */}
                       </div>
                     </div>
                   </motion.div>
@@ -418,9 +470,13 @@ export default function About() {
                         {person.role}
                       </p>
                     </div>
-                    <p className="text-slate-500 text-sm leading-relaxed border-t border-slate-100 pt-3">
+                    {/* <p className="text-slate-500 text-sm leading-relaxed border-t border-slate-100 pt-3">
+                      {person.bio}
+                    </p> */}
+                    <p className="text-slate-900 text-sm leading-relaxed border-t border-slate-100 pt-3">
                       {person.bio}
                     </p>
+
                   </div>
                 </motion.div>
               ))}
