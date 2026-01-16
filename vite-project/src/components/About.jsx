@@ -514,19 +514,32 @@ export default function About() {
                       </a>
                     </div>
                   </div>
-                  <div className="bg-white/60 backdrop-blur-sm p-6 rounded-xl border border-white/50 shadow-sm flex-grow hover:shadow-md transition-shadow duration-300">
+                  {/* <div className="bg-white/60 backdrop-blur-sm p-6 rounded-xl border border-white/50 shadow-sm flex-grow hover:shadow-md transition-shadow duration-300"> */}
+                  {/* <div className="bg-purple-50/80 backdrop-blur-sm p-6 rounded-xl border border-purple-200/70 shadow-sm flex-grow hover:shadow-md transition-shadow duration-300"> */}
+                  {/* <div className="bg-purple-100/90 backdrop-blur-sm p-6 rounded-xl border border-purple-300/70 shadow-sm flex-grow hover:shadow-md transition-shadow duration-300"> */}
+                  <div className="bg-indigo-100/90 backdrop-blur-sm p-6 rounded-xl border border-indigo-300/70 shadow-sm flex-grow hover:shadow-md transition-shadow duration-300">
+
                     <div className="mb-3">
-                      <h4 className="text-lg font-bold text-slate-900">
+                      {/* <h4 className="text-lg font-bold text-slate-900"> */}
+                      <h4 className="text-xl font-bold text-slate-900">
+
                         {person.name}
                       </h4>
-                      <p className="text-blue-600 font-medium text-sm">
+                      {/* <p className="text-blue-600 font-medium text-sm"> */}
+                      {/* <p className="text-purple-700 font-semibold text-base"> */}
+                      <p className="text-indigo-700 font-semibold text-base">
+
+
                         {person.role}
                       </p>
                     </div>
                     {/* <p className="text-slate-500 text-sm leading-relaxed border-t border-slate-100 pt-3">
                       {person.bio}
                     </p> */}
-                    <p className="text-slate-900 text-sm leading-relaxed border-t border-slate-100 pt-3">
+                    {/* <p className="text-slate-900 text-sm leading-relaxed border-t border-slate-100 pt-3"> */}
+                    {/* <p className="text-slate-700 text-[15px] leading-relaxed border-t border-purple-100 pt-4"> */}
+                    <p className="text-slate-700 text-[15px] leading-relaxed border-t border-indigo-200 pt-4">
+
                       {person.bio}
                     </p>
 
