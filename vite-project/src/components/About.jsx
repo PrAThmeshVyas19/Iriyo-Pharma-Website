@@ -478,8 +478,7 @@ export default function About() {
 
         {/* 4. LEADERSHIP */}
         <section className="py-14">
-          <div className="absolute top-0 left-0 h-1 w-full bg-amber-400/80 rounded-t-2xl" />
-
+          
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex flex-col md:flex-row justify-between items-end mb-8 md:mb-12">
               <Section>
