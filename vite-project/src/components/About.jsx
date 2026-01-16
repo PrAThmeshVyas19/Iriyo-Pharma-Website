@@ -108,6 +108,34 @@ const values = [
   },
 ];
 
+const valueColors = [
+  { 
+    bg: "bg-blue-100/70", text: "text-blue-900",
+    iconBg: "bg-blue-200/70", iconText: "text-blue-700",
+    ring: "ring-blue-400/30", border: "border-blue-300/70",
+    underline: "bg-blue-500"
+  },
+  { 
+    bg: "bg-orange-100/70", text: "text-orange-900",
+    iconBg: "bg-orange-200/70", iconText: "text-orange-700",
+    ring: "ring-orange-400/30", border: "border-orange-300/70",
+    underline: "bg-orange-500"
+  },
+  { 
+    bg: "bg-green-100/70", text: "text-green-900",
+    iconBg: "bg-green-200/70", iconText: "text-green-700",
+    ring: "ring-green-400/30", border: "border-green-300/70",
+    underline: "bg-green-500"
+  },
+  { 
+    bg: "bg-purple-100/70", text: "text-purple-900",
+    iconBg: "bg-purple-200/70", iconText: "text-purple-700",
+    ring: "ring-purple-400/30", border: "border-purple-300/70",
+    underline: "bg-purple-500"
+  },
+];
+
+
 const directors = [
   {
     name: "Mr. Sawan Bahekar",
@@ -192,7 +220,7 @@ export default function About() {
             <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
               {/* <Section className="group relative overflow-hidden rounded-[2rem] bg-slate-900/95 backdrop-blur-md text-white p-8 lg:p-12 shadow-2xl ring-1 ring-white/10"> */}
               {/* <Section className="group relative overflow-hidden rounded-[2rem] border border-white/50 bg-white/60 backdrop-blur-md p-8 lg:p-12 shadow-lg"> */}
-              <Section className="group relative overflow-hidden rounded-[2rem] border border-green-200/60 bg-green-50/80 backdrop-blur-md p-8 lg:p-12 shadow-lg">
+              <Section className="group relative overflow-hidden rounded-[2rem] bg-rose-100/80 border border-rose-300/70 backdrop-blur-md text-slate-900 p-8 lg:p-12 shadow-xl ring-1 ring-rose-400/30">
 
                 <div className="absolute top-0 right-0 p-8 opacity-10 transition-transform duration-700 group-hover:scale-110 group-hover:rotate-12">
                   <Target size={240} />
@@ -202,9 +230,16 @@ export default function About() {
                     {/* <div className="w-14 h-14 rounded-2xl bg-blue-500/20 flex items-center justify-center mb-8 ring-1 ring-white/10">
                       <Target className="text-blue-400 w-7 h-7" />
                     </div> */}
-                    <div className="w-14 h-14 rounded-2xl bg-green-100 flex items-center justify-center mb-8">
+                    {/* <div className="w-14 h-14 rounded-2xl bg-green-100 flex items-center justify-center mb-8">
                       <Target className="text-green-600 w-7 h-7" />
+                    </div> */}
+                    {/* <div className="w-14 h-14 rounded-2xl bg-emerald-200/70 flex items-center justify-center mb-8">
+                      <Target className="text-emerald-700 w-7 h-7" />
+                    </div> */}
+                    <div className="w-14 h-14 rounded-2xl bg-rose-200/70 flex items-center justify-center mb-8">
+                      <Target className="text-rose-700 w-7 h-7" />
                     </div>
+
 
                     <h3 className="text-3xl font-bold mb-4 tracking-tight">
                       Our Mission
@@ -224,7 +259,7 @@ export default function About() {
                 </div>
               </Section>
 
-              <Section className="group relative overflow-hidden rounded-[2rem] border border-green-200/60 bg-green-50/80 backdrop-blur-md p-8 lg:p-12 shadow-lg">
+              <Section className="group relative overflow-hidden rounded-[2rem] bg-teal-100/80 border border-teal-300/70 backdrop-blur-md p-8 lg:p-12 shadow-xl ring-1 ring-teal-400/30">
 
               {/* <Section className="group relative overflow-hidden rounded-[2rem] border border-white/50 bg-white/60 backdrop-blur-md p-8 lg:p-12 shadow-lg"> */}
                 <div className="absolute bottom-0 right-0 p-8 opacity-5 transition-transform duration-700 group-hover:scale-110 group-hover:-rotate-12">
@@ -235,8 +270,11 @@ export default function About() {
                     {/* <div className="w-14 h-14 rounded-2xl bg-blue-100 flex items-center justify-center mb-8">
                       <Eye className="text-blue-600 w-7 h-7" />
                     </div> */}
-                    <div className="w-14 h-14 rounded-2xl bg-green-100 flex items-center justify-center mb-8">
+                    {/* <div className="w-14 h-14 rounded-2xl bg-green-100 flex items-center justify-center mb-8">
                       <Eye className="text-green-600 w-7 h-7" />
+                    </div> */}
+                    <div className="w-14 h-14 rounded-2xl bg-teal-200/70 flex items-center justify-center mb-8">
+                      <Eye className="text-teal-700 w-7 h-7" />
                     </div>
 
                     <h3 className="text-3xl font-bold mb-4 text-slate-900 tracking-tight">
@@ -331,10 +369,13 @@ export default function About() {
                         //   // : "bg-white/70 text-slate-700 hover:bg-white border border-white/60",
                         //   : "bg-white/70 text-slate-700 hover:bg-white border border-orange-200"
 
-                        isActive
-                          ? "bg-orange-200 text-orange-800 shadow-md"
-                          : "bg-white/70 text-slate-700 hover:bg-white border border-orange-200"
+                        // isActive
+                        //   ? "bg-orange-200 text-orange-800 shadow-md"
+                        //   : "bg-white/70 text-slate-700 hover:bg-white border border-orange-200"
 
+                          isActive
+                            ? `${valueColors[idx].bg} ${valueColors[idx].text} shadow-md`
+                            : `bg-white/70 text-slate-700 hover:bg-white border ${valueColors[idx].border}`
 
                       ].join(" ")}
                     >
@@ -346,9 +387,15 @@ export default function About() {
                           // isActive
                           //   ? "bg-orange-400/20 text-orange-600"
                           //   : "bg-orange-100 text-orange-500",
+
+                          // isActive
+                          //   ? "bg-orange-300/20 text-orange-700"
+                          //   : "bg-orange-100 text-orange-500"
+
                           isActive
-                            ? "bg-orange-300/20 text-orange-700"
-                            : "bg-orange-100 text-orange-500"
+                            ? `${valueColors[idx].iconBg} ${valueColors[idx].iconText}`
+                            : `${valueColors[idx].iconBg} ${valueColors[idx].iconText}`
+
 
                         ].join(" ")}
                       >
@@ -360,7 +407,9 @@ export default function About() {
                       {isActive && (
                         <motion.span
                           layoutId="valueTabActive"
-                          className="absolute -bottom-2 left-1/2 h-1 w-10 -translate-x-1/2 rounded-full bg-orange-400"
+                          className={`absolute -bottom-2 left-1/2 h-1 w-10 -translate-x-1/2 rounded-full ${valueColors[idx].underline}`}
+
+                          // className="absolute -bottom-2 left-1/2 h-1 w-10 -translate-x-1/2 rounded-full bg-orange-400"
 
                           // className="absolute -bottom-2 left-1/2 h-1 w-10 -translate-x-1/2 rounded-full bg-blue-500"
                         />
@@ -388,12 +437,16 @@ export default function About() {
                     
                     //  below one was good plain glass
                     // className="rounded-[2rem] border border-white/60 bg-white/50 backdrop-blur-xl shadow-xl p-8 md:p-10 ring-1 ring-slate-900/5"
-                    className="rounded-[2rem] border border-orange-200/60 bg-orange-50/80 backdrop-blur-xl shadow-xl p-8 md:p-10 ring-1 ring-orange-300/30"
+                    // className="rounded-[2rem] border border-orange-200/60 bg-orange-50/80 backdrop-blur-xl shadow-xl p-8 md:p-10 ring-1 ring-orange-300/30"
+                    // className="rounded-[2rem] border border-orange-300/70 bg-orange-100/90 backdrop-blur-xl shadow-xl p-8 md:p-10 ring-1 ring-orange-400/40"
+                    // className={`rounded-[2rem] border ${valueColors[activeValue].border} bg-${valueColors[activeValue].bg.split(" ")[0]}/90 backdrop-blur-xl shadow-xl p-8 md:p-10 ring-1 ${valueColors[activeValue].ring}`}
+                    className={`rounded-[2rem] border ${valueColors[activeValue].border} ${valueColors[activeValue].bg} backdrop-blur-xl shadow-xl p-8 md:p-10 ring-1 ${valueColors[activeValue].ring}`}
 
                   >
                     <div className="flex items-start gap-5">
                       {/* <div className="w-14 h-14 rounded-2xl bg-blue-50 flex items-center justify-center text-blue-600"> */}
-                      <div className="w-14 h-14 rounded-2xl bg-orange-100 flex items-center justify-center text-orange-600">
+                      {/* <div className="w-14 h-14 rounded-2xl bg-orange-100 flex items-center justify-center text-orange-600"> */}
+                      <div className={`w-14 h-14 rounded-2xl ${valueColors[activeValue].iconBg} flex items-center justify-center ${valueColors[activeValue].iconText}`}>
 
                         {React.createElement(values[activeValue].icon, { size: 28 })}
                       </div>
